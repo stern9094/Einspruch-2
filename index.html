@@ -6,51 +6,54 @@
 <title>Einspruch</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
   min-height:100vh;
   font-family:Arial,sans-serif;
   background:#f2f0e8;
-  color:#222
+  color:#222;
 }
 
 .app{
   max-width:430px;
   margin:auto;
-  padding:16px 14px
+  padding:16px 14px;
 }
 
 h1{
   text-align:center;
   margin:4px 0 16px;
-  font-size:28px
+  font-size:28px;
 }
 
 .settings{
   background:#fff;
   padding:15px;
   border-radius:14px;
-  box-shadow:0 2px 9px #0002
+  box-shadow:0 2px 9px #0002;
 }
 
 label{
   display:block;
   font-weight:bold;
-  margin:10px 0 5px
+  margin:10px 0 5px;
 }
 
-select,button{
+select,
+button{
   width:100%;
   font-size:18px;
   padding:11px;
-  border-radius:10px
+  border-radius:10px;
 }
 
 select{
   border:1px solid #aaa;
-  background:#fff
+  background:#fff;
 }
 
 button{
@@ -58,29 +61,29 @@ button{
   border:0;
   background:#222;
   color:#fff;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .game{
   display:none;
-  text-align:center
+  text-align:center;
 }
 
 .phase{
   font-size:21px;
   font-weight:bold;
-  margin-top:18px
+  margin-top:18px;
 }
 
 .timer{
   font-size:48px;
   font-weight:bold;
-  margin:4px
+  margin:4px;
 }
 
 .hint{
   font-size:15px;
-  margin:4px 0 14px
+  margin:4px 0 14px;
 }
 
 .grid{
@@ -88,7 +91,7 @@ button{
   margin:auto;
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:8px
+  gap:8px;
 }
 
 .tile{
@@ -100,34 +103,34 @@ button{
   justify-content:center;
   font-weight:bold;
   font-size:clamp(22px,7vw,34px);
-  box-shadow:0 2px 6px #0002
+  box-shadow:0 2px 6px #0002;
 }
 
 .animal{
   font-size:clamp(30px,10vw,48px);
-  padding:6px
+  padding:6px;
 }
 
 .animal svg{
   width:85%;
   height:85%;
-  display:block
+  display:block;
 }
 
 .solution{
-  display:none
+  display:none;
 }
 
 .solution-title{
   font-size:22px;
   font-weight:bold;
-  margin:18px 0 10px
+  margin:18px 0 10px;
 }
 
 .secondary{
   background:#fff;
   color:#222;
-  border:1px solid #888
+  border:1px solid #888;
 }
 </style>
 </head>
@@ -149,7 +152,6 @@ button{
   <option value="mixed">Gemischt</option>
 </select>
 
-
 <label>Merken</label>
 
 <select id="memory">
@@ -159,7 +161,6 @@ button{
   <option value="25">25 Sekunden</option>
   <option value="30">30 Sekunden</option>
 </select>
-
 
 <label>Anzahl Elemente</label>
 
@@ -173,14 +174,12 @@ button{
   <option value="10">10</option>
 </select>
 
-
 <label>Bilder</label>
 
 <select id="duplicates">
-  <option value="unique">Ich möchte keine doppelten Bilder</option>
-  <option value="duplicates">Ich möchte doppelte Bilder</option>
+  <option value="unique">Keine doppelten Bilder</option>
+  <option value="duplicates">Doppelte Bilder möglich</option>
 </select>
-
 
 <label>Zeit zum Legen</label>
 
@@ -192,8 +191,7 @@ button{
   <option value="90">90 Sekunden</option>
 </select>
 
-
-<button onclick="start()">Neue Runde starten</button>
+<button id="startButton">Neue Runde starten</button>
 
 </div>
 
@@ -211,14 +209,18 @@ button{
 
 <div class="solution" id="solution">
 
-<div class="solution-title">Richtige Lösung</div>
+<div class="solution-title">
+Richtige Lösung
+</div>
 
 <div class="grid" id="solutionGrid"></div>
 
 </div>
 
 
-<button class="secondary" onclick="back()">Neue Runde</button>
+<button class="secondary" id="backButton">
+Neue Runde
+</button>
 
 </div>
 
@@ -227,173 +229,231 @@ button{
 
 <script>
 
+/* -----------------------------
+   HTML-Elemente
+----------------------------- */
+
+const settings =
+  document.getElementById("settings");
+
+const game =
+  document.getElementById("game");
+
+const typeSelect =
+  document.getElementById("type");
+
+const memorySelect =
+  document.getElementById("memory");
+
+const countSelect =
+  document.getElementById("count");
+
+const duplicatesSelect =
+  document.getElementById("duplicates");
+
+const solveSelect =
+  document.getElementById("solve");
+
+const startButton =
+  document.getElementById("startButton");
+
+const backButton =
+  document.getElementById("backButton");
+
+const phase =
+  document.getElementById("phase");
+
+const timer =
+  document.getElementById("timer");
+
+const hint =
+  document.getElementById("hint");
+
+const grid =
+  document.getElementById("grid");
+
+const solution =
+  document.getElementById("solution");
+
+const solutionGrid =
+  document.getElementById("solutionGrid");
+
+
+/* -----------------------------
+   Inhalte
+----------------------------- */
+
 const numbers=[
-  "0","1","2","3","4","5","6","7","8","9"
+  "0","1","2","3","4",
+  "5","6","7","8","9"
 ];
 
 
 const symbols=[
-  "★","■","●","=","♥","◆","➜","+","−","×"
+  "★","■","●","=","♥",
+  "◆","➜","+","−","×"
 ];
 
 
-/*
-  Eigene Tierzeichnungen als SVG.
-  Dadurch werden keine externen Bilddateien benötigt.
-*/
+/* -----------------------------
+   Tiere als SVG
+----------------------------- */
 
 const animals=[
 
 [
 "Hase",
-"<svg viewBox='0 0 100 100'>
-<ellipse cx='50' cy='58' rx='30' ry='27' fill='#ddd'/>
-<ellipse cx='38' cy='20' rx='9' ry='25' fill='#ddd'/>
-<ellipse cx='62' cy='20' rx='9' ry='25' fill='#ddd'/>
-<circle cx='40' cy='55' r='4'/>
-<circle cx='60' cy='55' r='4'/>
-<circle cx='50' cy='66' r='5' fill='#f99'/>
-<path d='M45 72 Q50 77 55 72' fill='none' stroke='#222' stroke-width='3'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<ellipse cx='50' cy='58' rx='30' ry='27' fill='#ddd'/>" +
+"<ellipse cx='38' cy='20' rx='9' ry='25' fill='#ddd'/>" +
+"<ellipse cx='62' cy='20' rx='9' ry='25' fill='#ddd'/>" +
+"<circle cx='40' cy='55' r='4'/>" +
+"<circle cx='60' cy='55' r='4'/>" +
+"<circle cx='50' cy='66' r='5' fill='#f99'/>" +
+"<path d='M45 72 Q50 77 55 72' fill='none' stroke='#222' stroke-width='3'/>" +
+"</svg>"
 ],
 
 [
 "Katze",
-"<svg viewBox='0 0 100 100'>
-<path d='M25 38 L25 15 L42 28 Q50 25 58 28 L75 15 L75 38 Q82 48 78 65 Q70 85 50 85 Q30 85 22 65 Q18 48 25 38Z' fill='#f4a261'/>
-<circle cx='39' cy='52' r='4'/>
-<circle cx='61' cy='52' r='4'/>
-<path d='M45 65 Q50 69 55 65' fill='none' stroke='#222' stroke-width='3'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<path d='M25 38 L25 15 L42 28 Q50 25 58 28 L75 15 L75 38 Q82 48 78 65 Q70 85 50 85 Q30 85 22 65 Q18 48 25 38Z' fill='#f4a261'/>" +
+"<circle cx='39' cy='52' r='4'/>" +
+"<circle cx='61' cy='52' r='4'/>" +
+"<path d='M45 65 Q50 69 55 65' fill='none' stroke='#222' stroke-width='3'/>" +
+"</svg>"
 ],
 
 [
 "Hund",
-"<svg viewBox='0 0 100 100'>
-<path d='M25 35 Q15 20 25 12 Q38 20 42 32 Q50 28 58 32 Q62 20 75 12 Q85 20 75 38 Q80 65 68 78 Q50 92 32 78 Q20 65 25 35Z' fill='#c98b5b'/>
-<circle cx='39' cy='53' r='4'/>
-<circle cx='61' cy='53' r='4'/>
-<ellipse cx='50' cy='67' rx='7' ry='5' fill='#333'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<path d='M25 35 Q15 20 25 12 Q38 20 42 32 Q50 28 58 32 Q62 20 75 12 Q85 20 75 38 Q80 65 68 78 Q50 92 32 78 Q20 65 25 35Z' fill='#c98b5b'/>" +
+"<circle cx='39' cy='53' r='4'/>" +
+"<circle cx='61' cy='53' r='4'/>" +
+"<ellipse cx='50' cy='67' rx='7' ry='5' fill='#333'/>" +
+"</svg>"
 ],
 
 [
 "Maus",
-"<svg viewBox='0 0 100 100'>
-<circle cx='30' cy='30' r='18' fill='#aaa'/>
-<circle cx='70' cy='30' r='18' fill='#aaa'/>
-<circle cx='50' cy='58' r='31' fill='#bbb'/>
-<circle cx='40' cy='55' r='4'/>
-<circle cx='60' cy='55' r='4'/>
-<circle cx='50' cy='66' r='5' fill='#f99'/>
-<path d='M50 70 Q38 75 28 70 M50 70 Q62 75 72 70' fill='none' stroke='#555' stroke-width='2'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<circle cx='30' cy='30' r='18' fill='#aaa'/>" +
+"<circle cx='70' cy='30' r='18' fill='#aaa'/>" +
+"<circle cx='50' cy='58' r='31' fill='#bbb'/>" +
+"<circle cx='40' cy='55' r='4'/>" +
+"<circle cx='60' cy='55' r='4'/>" +
+"<circle cx='50' cy='66' r='5' fill='#f99'/>" +
+"<path d='M50 70 Q38 75 28 70 M50 70 Q62 75 72 70' fill='none' stroke='#555' stroke-width='2'/>" +
+"</svg>"
 ],
 
 [
 "Pferd",
-"<svg viewBox='0 0 100 100'>
-<path d='M27 78 Q20 55 30 38 L25 18 L43 28 Q55 22 68 30 L80 18 L76 45 Q82 65 70 78 Q50 90 27 78Z' fill='#b8794b'/>
-<circle cx='40' cy='52' r='4'/>
-<circle cx='63' cy='52' r='4'/>
-<path d='M45 68 Q50 72 55 68' fill='none' stroke='#222' stroke-width='3'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<path d='M27 78 Q20 55 30 38 L25 18 L43 28 Q55 22 68 30 L80 18 L76 45 Q82 65 70 78 Q50 90 27 78Z' fill='#b8794b'/>" +
+"<circle cx='40' cy='52' r='4'/>" +
+"<circle cx='63' cy='52' r='4'/>" +
+"<path d='M45 68 Q50 72 55 68' fill='none' stroke='#222' stroke-width='3'/>" +
+"</svg>"
 ],
 
 [
 "Kuh",
-"<svg viewBox='0 0 100 100'>
-<path d='M23 35 Q18 20 30 15 L40 27 Q50 23 60 27 L70 15 Q82 20 77 35 Q82 60 68 77 Q50 90 32 77 Q18 60 23 35Z' fill='#fff'/>
-<ellipse cx='38' cy='45' rx='10' ry='8' fill='#222'/>
-<ellipse cx='63' cy='65' rx='9' ry='7' fill='#222'/>
-<circle cx='40' cy='55' r='4'/>
-<circle cx='60' cy='55' r='4'/>
-<ellipse cx='50' cy='69' rx='13' ry='8' fill='#f3a'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<path d='M23 35 Q18 20 30 15 L40 27 Q50 23 60 27 L70 15 Q82 20 77 35 Q82 60 68 77 Q50 90 32 77 Q18 60 23 35Z' fill='#fff'/>" +
+"<ellipse cx='38' cy='45' rx='10' ry='8' fill='#222'/>" +
+"<ellipse cx='63' cy='65' rx='9' ry='7' fill='#222'/>" +
+"<circle cx='40' cy='55' r='4'/>" +
+"<circle cx='60' cy='55' r='4'/>" +
+"<ellipse cx='50' cy='69' rx='13' ry='8' fill='#f3a'/>" +
+"</svg>"
 ],
 
 [
 "Schwein",
-"<svg viewBox='0 0 100 100'>
-<path d='M22 42 Q18 25 32 18 L43 28 Q50 25 57 28 L68 18 Q82 25 78 42 Q83 62 70 77 Q50 90 30 77 Q17 62 22 42Z' fill='#f5a6b8'/>
-<circle cx='39' cy='52' r='4'/>
-<circle cx='61' cy='52' r='4'/>
-<ellipse cx='50' cy='68' rx='14' ry='9' fill='#e9829c'/>
-<circle cx='45' cy='68' r='3'/>
-<circle cx='55' cy='68' r='3'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<path d='M22 42 Q18 25 32 18 L43 28 Q50 25 57 28 L68 18 Q82 25 78 42 Q83 62 70 77 Q50 90 30 77 Q17 62 22 42Z' fill='#f5a6b8'/>" +
+"<circle cx='39' cy='52' r='4'/>" +
+"<circle cx='61' cy='52' r='4'/>" +
+"<ellipse cx='50' cy='68' rx='14' ry='9' fill='#e9829c'/>" +
+"<circle cx='45' cy='68' r='3'/>" +
+"<circle cx='55' cy='68' r='3'/>" +
+"</svg>"
 ],
 
 [
 "Huhn",
-"<svg viewBox='0 0 100 100'>
-<ellipse cx='50' cy='58' rx='29' ry='27' fill='#fff'/>
-<circle cx='50' cy='30' r='20' fill='#fff'/>
-<circle cx='44' cy='28' r='3'/>
-<path d='M50 34 L68 40 L50 46Z' fill='#f4a261'/>
-<path d='M43 12 Q50 4 57 12' fill='none' stroke='#e63946' stroke-width='8'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<ellipse cx='50' cy='58' rx='29' ry='27' fill='#fff'/>" +
+"<circle cx='50' cy='30' r='20' fill='#fff'/>" +
+"<circle cx='44' cy='28' r='3'/>" +
+"<path d='M50 34 L68 40 L50 46Z' fill='#f4a261'/>" +
+"<path d='M43 12 Q50 4 57 12' fill='none' stroke='#e63946' stroke-width='8'/>" +
+"</svg>"
 ],
 
 [
 "Schaf",
-"<svg viewBox='0 0 100 100'>
-<circle cx='35' cy='45' r='18' fill='#fff'/>
-<circle cx='55' cy='35' r='20' fill='#fff'/>
-<circle cx='68' cy='48' r='18' fill='#fff'/>
-<circle cx='50' cy='62' r='25' fill='#fff'/>
-<ellipse cx='25' cy='58' rx='12' ry='18' fill='#555'/>
-<circle cx='22' cy='54' r='3'/>
-<circle cx='28' cy='54' r='3'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<circle cx='35' cy='45' r='18' fill='#fff'/>" +
+"<circle cx='55' cy='35' r='20' fill='#fff'/>" +
+"<circle cx='68' cy='48' r='18' fill='#fff'/>" +
+"<circle cx='50' cy='62' r='25' fill='#fff'/>" +
+"<ellipse cx='25' cy='58' rx='12' ry='18' fill='#555'/>" +
+"<circle cx='22' cy='54' r='3'/>" +
+"<circle cx='28' cy='54' r='3'/>" +
+"</svg>"
 ],
 
 [
 "Ente",
-"<svg viewBox='0 0 100 100'>
-<ellipse cx='50' cy='58' rx='30' ry='25' fill='#fff'/>
-<circle cx='38' cy='34' r='19' fill='#fff'/>
-<path d='M52 34 L78 42 L52 50Z' fill='#f4a261'/>
-<circle cx='40' cy='30' r='3'/>
-<path d='M35 78 L30 88 M55 78 L60 88' stroke='#f4a261' stroke-width='5'/>
-</svg>"
+"<svg viewBox='0 0 100 100'>" +
+"<ellipse cx='50' cy='58' rx='30' ry='25' fill='#fff'/>" +
+"<circle cx='38' cy='34' r='19' fill='#fff'/>" +
+"<path d='M52 34 L78 42 L52 50Z' fill='#f4a261'/>" +
+"<circle cx='40' cy='30' r='3'/>" +
+"<path d='M35 78 L30 88 M55 78 L60 88' stroke='#f4a261' stroke-width='5'/>" +
+"</svg>"
 ]
 
 ];
 
 
+/* -----------------------------
+   Spielvariablen
+----------------------------- */
+
 let sequence=[];
+let interval=null;
 
-let interval;
 
-
-/* Inhaltspool */
+/* -----------------------------
+   Inhaltspool
+----------------------------- */
 
 function pool(type){
 
   if(type==="numbers"){
-    return numbers.map(x=>({v:x}));
+    return numbers.map(x=>({
+      v:x
+    }));
   }
-
 
   if(type==="symbols"){
-    return symbols.map(x=>({v:x}));
+    return symbols.map(x=>({
+      v:x
+    }));
   }
 
-
   if(type==="animals"){
-
     return animals.map(x=>({
       v:x[1],
       label:x[0],
       animal:true
     }));
-
   }
 
-
   return [
-
     ...numbers.map(x=>({
       v:x
     })),
@@ -407,13 +467,13 @@ function pool(type){
       label:x[0],
       animal:true
     }))
-
   ];
-
 }
 
 
-/* Zufälliges Mischen */
+/* -----------------------------
+   Mischen
+----------------------------- */
 
 function shuffle(array){
 
@@ -429,34 +489,27 @@ function shuffle(array){
       a[j],
       a[i]
     ];
-
   }
 
   return a;
-
 }
 
 
-/* Vorlage erzeugen */
+/* -----------------------------
+   Runde erzeugen
+----------------------------- */
 
 function makeSequence(type,n){
 
   const p=pool(type);
 
-
-  /* Jedes Element nur einmal */
-
-  if(duplicates.value==="unique"){
+  if(duplicatesSelect.value==="unique"){
 
     return shuffle(p).slice(0,n);
 
   }
 
-
-  /* Doppelte möglich */
-
   const a=[];
-
 
   for(let i=0;i<n;i++){
 
@@ -470,18 +523,17 @@ function makeSequence(type,n){
 
   }
 
-
   return a;
-
 }
 
 
-/* Elemente anzeigen */
+/* -----------------------------
+   Elemente anzeigen
+----------------------------- */
 
 function draw(el,a){
 
   el.innerHTML="";
-
 
   a.forEach(x=>{
 
@@ -489,8 +541,7 @@ function draw(el,a){
 
     d.className=
       "tile"+
-      (x.animal?" animal":"");
-
+      (x.animal ? " animal" : "");
 
     if(x.animal){
 
@@ -502,22 +553,19 @@ function draw(el,a){
 
     }
 
-
     if(x.label){
-
       d.title=x.label;
-
     }
-
 
     el.appendChild(d);
 
   });
-
 }
 
 
-/* Countdown */
+/* -----------------------------
+   Countdown
+----------------------------- */
 
 function countdown(seconds,text,done){
 
@@ -525,18 +573,14 @@ function countdown(seconds,text,done){
 
   let t=seconds;
 
-
   phase.textContent=text;
-
   timer.textContent=t;
-
 
   interval=setInterval(()=>{
 
     t--;
 
     timer.textContent=t;
-
 
     if(t<=0){
 
@@ -547,24 +591,23 @@ function countdown(seconds,text,done){
     }
 
   },1000);
-
 }
 
 
-/* Neue Runde */
+/* -----------------------------
+   Spiel starten
+----------------------------- */
 
 function start(){
 
   const anzahl=
-    Number(count.value);
-
+    Number(countSelect.value);
 
   sequence=
     makeSequence(
-      type.value,
+      typeSelect.value,
       anzahl
     );
-
 
   settings.style.display="none";
 
@@ -574,38 +617,32 @@ function start(){
 
   grid.style.visibility="visible";
 
-
   hint.textContent=
     "Merke dir Reihenfolge und Positionen.";
-
 
   draw(
     grid,
     sequence
   );
 
-
   countdown(
-    Number(memory.value),
+    Number(memorySelect.value),
     "Merken!",
     ()=>{
 
       grid.style.visibility="hidden";
 
-
       hint.textContent=
         "Die Vorlage ist ausgeblendet. Lege jetzt deine Lösung.";
 
-
       countdown(
-        Number(solve.value),
+        Number(solveSelect.value),
         "Zeit zum Legen!",
         ()=>{
 
           /*
-            WICHTIG:
-            Das ursprüngliche Spielfeld bleibt verborgen.
-            Nur die Lösung wird darunter angezeigt.
+            Das ursprüngliche Spielfeld bleibt
+            jetzt verborgen.
           */
 
           grid.style.visibility="hidden";
@@ -615,16 +652,13 @@ function start(){
 
           timer.textContent="0";
 
-
           hint.textContent=
             "Hier ist die richtige Lösung.";
-
 
           draw(
             solutionGrid,
             sequence
           );
-
 
           solution.style.display="block";
 
@@ -633,11 +667,12 @@ function start(){
 
     }
   );
-
 }
 
 
-/* Zurück */
+/* -----------------------------
+   Zurück zu den Einstellungen
+----------------------------- */
 
 function back(){
 
@@ -649,7 +684,24 @@ function back(){
 
   grid.style.visibility="visible";
 
+  solution.style.display="none";
+
 }
+
+
+/* -----------------------------
+   Buttons
+----------------------------- */
+
+startButton.addEventListener(
+  "click",
+  start
+);
+
+backButton.addEventListener(
+  "click",
+  back
+);
 
 </script>
 
