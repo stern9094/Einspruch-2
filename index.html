@@ -6,122 +6,127 @@
 <title>Einspruch</title>
 
 <style>
-*{
-  box-sizing:border-box;
+* {
+  box-sizing: border-box;
 }
 
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Arial,sans-serif;
-  background:#f2f0e8;
-  color:#222;
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f2f0e8;
+  color: #222;
 }
 
-.app{
-  max-width:430px;
-  margin:auto;
-  padding:16px 14px;
+.app {
+  max-width: 430px;
+  margin: auto;
+  padding: 16px 14px;
 }
 
-h1{
-  text-align:center;
-  margin:4px 0 16px;
-  font-size:28px;
+h1 {
+  text-align: center;
+  margin: 4px 0 16px;
+  font-size: 28px;
 }
 
-.settings{
-  background:#fff;
-  padding:15px;
-  border-radius:14px;
-  box-shadow:0 2px 9px #0002;
+.settings {
+  background: #fff;
+  padding: 15px;
+  border-radius: 14px;
+  box-shadow: 0 2px 9px #0002;
 }
 
-label{
-  display:block;
-  font-weight:bold;
-  margin:10px 0 5px;
+label {
+  display: block;
+  font-weight: bold;
+  margin: 10px 0 5px;
 }
 
 select,
-button{
-  width:100%;
-  font-size:18px;
-  padding:11px;
-  border-radius:10px;
+button {
+  width: 100%;
+  font-size: 18px;
+  padding: 11px;
+  border-radius: 10px;
 }
 
-select{
-  border:1px solid #aaa;
-  background:#fff;
+select {
+  border: 1px solid #aaa;
+  background: #fff;
 }
 
-button{
-  margin-top:14px;
-  border:0;
-  background:#222;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
+button {
+  margin-top: 14px;
+  border: 0;
+  background: #222;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.game{
-  display:none;
-  text-align:center;
+button:active {
+  transform: scale(0.98);
 }
 
-.phase{
-  font-size:21px;
-  font-weight:bold;
-  margin-top:18px;
+.game {
+  display: none;
+  text-align: center;
 }
 
-.timer{
-  font-size:48px;
-  font-weight:bold;
-  margin:4px;
+.phase {
+  font-size: 21px;
+  font-weight: bold;
+  margin-top: 18px;
 }
 
-.hint{
-  font-size:15px;
-  margin:4px 0 14px;
+.timer {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 4px;
 }
 
-.grid{
-  width:min(92vw,330px);
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
+.hint {
+  font-size: 15px;
+  margin: 4px 0 14px;
 }
 
-.tile{
-  aspect-ratio:1;
-  background:#b8b8b8;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:clamp(26px,8vw,38px);
-  box-shadow:0 2px 6px #0003;
-  overflow:hidden;
+.grid {
+  width: min(92vw, 330px);
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.tile {
+  aspect-ratio: 1;
+  background: #b8b8b8;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: clamp(26px, 8vw, 38px);
+  box-shadow: 0 2px 6px #0003;
+  overflow: hidden;
 }
 
 /* Zahlen */
-.number{
-  color:#0645ad;
-  font-weight:900;
+.number {
+  color: #0645ad;
+  font-weight: 900;
 }
 
 /* Symbole */
-.symbol{
-  color:#a00000;
-  font-weight:900;
+.symbol {
+  color: #a00000;
+  font-weight: 900;
 }
 
 /* Tiere */
-.animal{
+.animal {
   font-family:
     "Apple Color Emoji",
     "Segoe UI Emoji",
@@ -129,20 +134,20 @@ button{
     sans-serif;
 }
 
-.solution{
-  display:none;
+.solution {
+  display: none;
 }
 
-.solution-title{
-  font-size:22px;
-  font-weight:bold;
-  margin:18px 0 10px;
+.solution-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 18px 0 10px;
 }
 
-.secondary{
-  background:#fff;
-  color:#222;
-  border:1px solid #888;
+.secondary {
+  background: #fff;
+  color: #222;
+  border: 1px solid #888;
 }
 </style>
 </head>
@@ -154,9 +159,11 @@ button{
 <h1>Einspruch</h1>
 
 
+<!-- EINSTELLUNGEN -->
+
 <div class="settings" id="settings">
 
-<label>Inhalt</label>
+<label for="type">Inhalt</label>
 
 <select id="type">
   <option value="numbers">Zahlen</option>
@@ -166,7 +173,7 @@ button{
 </select>
 
 
-<label>Merken</label>
+<label for="memory">Merken</label>
 
 <select id="memory">
   <option value="10">10 Sekunden</option>
@@ -177,7 +184,7 @@ button{
 </select>
 
 
-<label>Anzahl Elemente</label>
+<label for="count">Anzahl Elemente</label>
 
 <select id="count">
   <option value="4">4</option>
@@ -190,15 +197,15 @@ button{
 </select>
 
 
-<label>Bilder</label>
+<label for="duplicates">Bilder</label>
 
 <select id="duplicates">
   <option value="unique">Ich möchte keine doppelten Bilder</option>
-  <option value="duplicates">Ich möchte doppelte Bilder</option>
+  <option value="duplicates">Ich möchte auch doppelte Bilder</option>
 </select>
 
 
-<label>Zeit zum Legen</label>
+<label for="solve">Zeit zum Legen</label>
 
 <select id="solve">
   <option value="30">30 Sekunden</option>
@@ -209,50 +216,65 @@ button{
 </select>
 
 
-<button id="startButton">
+<button type="button" id="startButton">
   Neue Runde starten
 </button>
 
 </div>
 
 
+<!-- SPIEL -->
 
 <div class="game" id="game">
 
-<div class="phase" id="phase"></div>
+  <div class="phase" id="phase"></div>
 
-<div class="timer" id="timer"></div>
+  <div class="timer" id="timer"></div>
 
-<div class="hint" id="hint"></div>
+  <div class="hint" id="hint"></div>
 
-<div class="grid" id="grid"></div>
+  <div class="grid" id="grid"></div>
 
 
-<div class="solution" id="solution">
+  <!-- LÖSUNG -->
 
-<div class="solution-title">
-Richtige Lösung
+  <div class="solution" id="solution">
+
+    <div class="solution-title">
+      Richtige Lösung
+    </div>
+
+    <div class="grid" id="solutionGrid"></div>
+
+  </div>
+
+
+  <button
+    type="button"
+    class="secondary"
+    id="backButton">
+
+    Neue Runde
+
+  </button>
+
 </div>
 
-<div class="grid" id="solutionGrid"></div>
-
 </div>
-
-
-<button class="secondary" id="backButton">
-Neue Runde
-</button>
-
-</div>
-
-</div>
-
 
 
 <script>
 
 /* =========================================
-   HTML-ELEMENTE
+   SPIELVARIABLEN
+========================================= */
+
+let sequence = [];
+let interval = null;
+
+
+/* =========================================
+   ELEMENTE
 ========================================= */
 
 const settings =
@@ -302,20 +324,20 @@ const solutionGrid =
 
 
 /* =========================================
-   VARIABLEN
-========================================= */
-
-let sequence = [];
-let interval = null;
-
-
-/* =========================================
    ZAHLEN
 ========================================= */
 
 const numbers = [
-  "0","1","2","3","4",
-  "5","6","7","8","9"
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9"
 ];
 
 
@@ -342,71 +364,83 @@ const symbols = [
 ========================================= */
 
 const animals = [
-
-  ["Hase","🐰"],
-  ["Katze","🐱"],
-  ["Hund","🐶"],
-  ["Maus","🐭"],
-  ["Pferd","🐴"],
-  ["Kuh","🐮"],
-  ["Schwein","🐷"],
-  ["Huhn","🐔"],
-  ["Schaf","🐑"],
-  ["Ente","🦆"]
-
+  ["Hase", "🐰"],
+  ["Katze", "🐱"],
+  ["Hund", "🐶"],
+  ["Maus", "🐭"],
+  ["Pferd", "🐴"],
+  ["Kuh", "🐮"],
+  ["Schwein", "🐷"],
+  ["Huhn", "🐔"],
+  ["Schaf", "🐑"],
+  ["Ente", "🦆"]
 ];
 
 
 /* =========================================
-   INHALTSPOOL
+   POOL ERSTELLEN
 ========================================= */
 
-function pool(type){
+function pool(type) {
 
-  if(type === "numbers"){
+  if (type === "numbers") {
 
-    return numbers.map(x => ({
-      v:x
-    }));
-
-  }
-
-
-  if(type === "symbols"){
-
-    return symbols.map(x => ({
-      v:x
-    }));
+    return numbers.map(function(x) {
+      return {
+        v: x
+      };
+    });
 
   }
 
 
-  if(type === "animals"){
+  if (type === "symbols") {
 
-    return animals.map(x => ({
-      v:x[1],
-      label:x[0],
-      animal:true
-    }));
+    return symbols.map(function(x) {
+      return {
+        v: x
+      };
+    });
 
   }
 
+
+  if (type === "animals") {
+
+    return animals.map(function(x) {
+      return {
+        v: x[1],
+        label: x[0],
+        animal: true
+      };
+    });
+
+  }
+
+
+  /* Gemischt */
 
   return [
 
-    ...numbers.map(x => ({
-      v:x
-    })),
+    ...numbers.map(function(x) {
+      return {
+        v: x
+      };
+    }),
 
-    ...symbols.map(x => ({
-      v:x
-    })),
+    ...symbols.map(function(x) {
+      return {
+        v: x
+      };
+    }),
 
-    ...animals.map(x => ({
-      v:x[1],
-      label:x[0],
-      animal:true
-    }))
+    ...animals.map(function(x) {
+      return {
+        v: x[1],
+        label: x[0],
+        animal: true
+      };
+    })
 
   ];
 
@@ -417,53 +451,70 @@ function pool(type){
    MISCHEN
 ========================================= */
 
-function shuffle(array){
+function shuffle(array) {
 
   const a = [...array];
 
-  for(let i = a.length - 1; i > 0; i--){
+  for (
+    let i = a.length - 1;
+    i > 0;
+    i--
+  ) {
 
     const j =
       Math.floor(
         Math.random() * (i + 1)
       );
 
-    [a[i],a[j]] =
-      [a[j],a[i]];
+    const temp = a[i];
+
+    a[i] = a[j];
+
+    a[j] = temp;
 
   }
 
   return a;
+
 }
 
 
 /* =========================================
-   RUNDE ERZEUGEN
+   SEQUENZ ERSTELLEN
 ========================================= */
 
-function makeSequence(type,n){
+function makeSequence(type, n) {
 
   const p = pool(type);
 
 
-  if(duplicatesSelect.value === "unique"){
+  /* Keine doppelten */
 
-    return shuffle(p).slice(0,n);
+  if (
+    duplicatesSelect.value === "unique"
+  ) {
+
+    return shuffle(p).slice(0, n);
 
   }
 
 
+  /* Doppelte erlaubt */
+
   const a = [];
 
-  for(let i = 0; i < n; i++){
+  for (
+    let i = 0;
+    i < n;
+    i++
+  ) {
 
-    a.push(
-      p[
-        Math.floor(
-          Math.random() * p.length
-        )
-      ]
-    );
+    const index =
+      Math.floor(
+        Math.random() * p.length
+      );
+
+    a.push(p[index]);
 
   }
 
@@ -473,14 +524,15 @@ function makeSequence(type,n){
 
 
 /* =========================================
-   ELEMENTE ANZEIGEN
+   FELDER ANZEIGEN
 ========================================= */
 
-function draw(el,a){
+function draw(el, array) {
 
   el.innerHTML = "";
 
-  a.forEach(x => {
+
+  array.forEach(function(x) {
 
     const d =
       document.createElement("div");
@@ -489,27 +541,31 @@ function draw(el,a){
     d.className = "tile";
 
 
-    /* Tiere */
+    /* Tier */
 
-    if(x.animal){
+    if (x.animal) {
 
       d.classList.add("animal");
 
     }
 
 
-    /* Zahlen */
+    /* Zahl */
 
-    else if(numbers.includes(x.v)){
+    else if (
+      numbers.includes(x.v)
+    ) {
 
       d.classList.add("number");
 
     }
 
 
-    /* Symbole */
+    /* Symbol */
 
-    else if(symbols.includes(x.v)){
+    else if (
+      symbols.includes(x.v)
+    ) {
 
       d.classList.add("symbol");
 
@@ -519,7 +575,7 @@ function draw(el,a){
     d.textContent = x.v;
 
 
-    if(x.label){
+    if (x.label) {
 
       d.title = x.label;
 
@@ -537,46 +593,67 @@ function draw(el,a){
    COUNTDOWN
 ========================================= */
 
-function countdown(seconds,text,done){
+function countdown(
+  seconds,
+  text,
+  finished
+) {
 
   clearInterval(interval);
 
   let t = seconds;
+
 
   phase.textContent = text;
 
   timer.textContent = t;
 
 
-  interval = setInterval(() => {
+  interval = setInterval(
+    function() {
 
-    t--;
+      t--;
 
-    timer.textContent = t;
+      timer.textContent = t;
 
 
-    if(t <= 0){
+      if (t <= 0) {
 
-      clearInterval(interval);
+        clearInterval(interval);
 
-      done();
+        interval = null;
 
-    }
+        finished();
 
-  },1000);
+      }
+
+    },
+    1000
+  );
 
 }
 
 
 /* =========================================
-   SPIEL STARTEN
+   NEUE RUNDE STARTEN
 ========================================= */
 
-function start(){
+function startGame() {
+
+  /* Alten Countdown stoppen */
+
+  clearInterval(interval);
+
+  interval = null;
+
+
+  /* Anzahl holen */
 
   const anzahl =
     Number(countSelect.value);
 
+
+  /* Neue Reihenfolge erzeugen */
 
   sequence =
     makeSequence(
@@ -585,6 +662,183 @@ function start(){
     );
 
 
+  /* Einstellungen ausblenden */
+
   settings.style.display = "none";
 
+
+  /* Spiel anzeigen */
+
+  game.style.display = "block";
+
+
+  /* Lösung verstecken */
+
+  solution.style.display = "none";
+
+
+  /* Spielfeld zeigen */
+
+  grid.style.visibility = "visible";
+
+
+  /* Text */
+
+  hint.textContent =
+    "Merke dir Reihenfolge und Positionen.";
+
+
+  /* Spielfeld zeichnen */
+
+  draw(
+    grid,
+    sequence
+  );
+
+
+  /* Merken-Countdown */
+
+  countdown(
+    Number(memorySelect.value),
+
+    "Merken!",
+
+    function() {
+
+      /* Vorlage verstecken */
+
+      grid.style.visibility =
+        "hidden";
+
+
+      hint.textContent =
+        "Die Vorlage ist ausgeblendet. Lege jetzt deine Lösung.";
+
+
+      /* Legen-Countdown */
+
+      countdown(
+        Number(solveSelect.value),
+
+        "Zeit zum Legen!",
+
+        function() {
+
+          /* Zeit vorbei */
+
+          grid.style.visibility =
+            "hidden";
+
+
+          phase.textContent =
+            "Zeit ist um!";
+
+
+          timer.textContent =
+            "0";
+
+
+          hint.textContent =
+            "Hier ist die richtige Lösung.";
+
+
+          /* Lösung anzeigen */
+
+          draw(
+            solutionGrid,
+            sequence
+          );
+
+
+          solution.style.display =
+            "block";
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   ZURÜCK
+========================================= */
+
+function backToSettings() {
+
+  clearInterval(interval);
+
+  interval = null;
+
+
   game.style.display =
+    "none";
+
+
+  settings.style.display =
+    "block";
+
+
+  grid.style.visibility =
+    "visible";
+
+
+  solution.style.display =
+    "none";
+
+
+  grid.innerHTML =
+    "";
+
+
+  solutionGrid.innerHTML =
+    "";
+
+
+  phase.textContent =
+    "";
+
+
+  timer.textContent =
+    "";
+
+
+  hint.textContent =
+    "";
+
+}
+
+
+/* =========================================
+   START-BUTTON
+========================================= */
+
+startButton.addEventListener(
+  "click",
+  function() {
+
+    startGame();
+
+  }
+);
+
+
+/* =========================================
+   NEUE-RUNDE-BUTTON
+========================================= */
+
+backButton.addEventListener(
+  "click",
+  function() {
+
+    backToSettings();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
