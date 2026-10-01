@@ -4,165 +4,430 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Merkspiel</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:#f2f0e8;color:#222}
-.app{max-width:430px;margin:auto;padding:16px 14px}
-h1{text-align:center;margin:4px 0 16px;font-size:28px}
-.settings{background:#fff;padding:15px;border-radius:14px;box-shadow:0 2px 9px #0002}
-label{display:block;font-weight:bold;margin:10px 0 5px}
-select,button{width:100%;font-size:18px;padding:11px;border-radius:10px}
-select{border:1px solid #aaa;background:#fff}
-button{margin-top:14px;border:0;background:#222;color:#fff;font-weight:bold}
-.game{display:none;text-align:center}
-.phase{font-size:21px;font-weight:bold;margin-top:18px}
-.timer{font-size:48px;font-weight:bold;margin:4px}
-.hint{font-size:15px;margin:4px 0 14px}
-.grid{width:min(92vw,330px);margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.tile{aspect-ratio:1;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:clamp(22px,7vw,34px);box-shadow:0 2px 6px #0002}
-.animal{font-size:clamp(30px,10vw,48px)}
-.solution{display:none}
-.solution-title{font-size:22px;font-weight:bold;margin:18px 0 10px}
-.secondary{background:#fff;color:#222;border:1px solid #888}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  background:#f2f0e8;
+  color:#222
+}
+
+.app{
+  max-width:430px;
+  margin:auto;
+  padding:16px 14px
+}
+
+h1{
+  text-align:center;
+  margin:4px 0 16px;
+  font-size:28px
+}
+
+.settings{
+  background:#fff;
+  padding:15px;
+  border-radius:14px;
+  box-shadow:0 2px 9px #0002
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  margin:10px 0 5px
+}
+
+select,button{
+  width:100%;
+  font-size:18px;
+  padding:11px;
+  border-radius:10px
+}
+
+select{
+  border:1px solid #aaa;
+  background:#fff
+}
+
+button{
+  margin-top:14px;
+  border:0;
+  background:#222;
+  color:#fff;
+  font-weight:bold
+}
+
+.game{
+  display:none;
+  text-align:center
+}
+
+.phase{
+  font-size:21px;
+  font-weight:bold;
+  margin-top:18px
+}
+
+.timer{
+  font-size:48px;
+  font-weight:bold;
+  margin:4px
+}
+
+.hint{
+  font-size:15px;
+  margin:4px 0 14px
+}
+
+.grid{
+  width:min(92vw,330px);
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px
+}
+
+.tile{
+  aspect-ratio:1;
+  background:#fff;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:clamp(22px,7vw,34px);
+  box-shadow:0 2px 6px #0002
+}
+
+.animal{
+  font-size:clamp(30px,10vw,48px)
+}
+
+.solution{
+  display:none
+}
+
+.solution-title{
+  font-size:22px;
+  font-weight:bold;
+  margin:18px 0 10px
+}
+
+.secondary{
+  background:#fff;
+  color:#222;
+  border:1px solid #888
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
 <h1>Merkspiel</h1>
 
 <div class="settings" id="settings">
+
 <label>Inhalt</label>
 <select id="type">
-<option value="numbers">Zahlen</option>
-<option value="animals">Tiere</option>
-<option value="symbols">Symbole</option>
-<option value="mixed">Gemischt</option>
+  <option value="numbers">Zahlen</option>
+  <option value="animals">Tiere</option>
+  <option value="symbols">Symbole</option>
+  <option value="mixed">Gemischt</option>
 </select>
 
 <label>Merken</label>
 <select id="memory">
-<option value="8">8 Sekunden</option>
-<option value="12">12 Sekunden</option>
-<option value="16">16 Sekunden</option>
+  <option value="10">10 Sekunden</option>
+  <option value="15">15 Sekunden</option>
+  <option value="20">20 Sekunden</option>
+  <option value="25">25 Sekunden</option>
+  <option value="30">30 Sekunden</option>
 </select>
 
 <label>Anzahl Elemente</label>
 <select id="count">
-<option value="6">6</option>
-<option value="8">8</option>
-<option value="12">12</option>
-<option value="16">16</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+</select>
+
+<label>Bilder</label>
+<select id="duplicates">
+  <option value="unique">Nur unterschiedliche</option>
+  <option value="duplicates">Doppelte erlaubt</option>
 </select>
 
 <label>Zeit zum Legen</label>
 <select id="solve">
-<option value="30">30 Sekunden</option>
-<option value="45">45 Sekunden</option>
-<option value="60">60 Sekunden</option>
-<option value="75">75 Sekunden</option>
-<option value="90">90 Sekunden</option>
+  <option value="30">30 Sekunden</option>
+  <option value="45">45 Sekunden</option>
+  <option value="60">60 Sekunden</option>
+  <option value="75">75 Sekunden</option>
+  <option value="90">90 Sekunden</option>
 </select>
 
 <button onclick="start()">Neue Runde starten</button>
+
 </div>
 
+
 <div class="game" id="game">
+
 <div class="phase" id="phase"></div>
 <div class="timer" id="timer"></div>
 <div class="hint" id="hint"></div>
+
 <div class="grid" id="grid"></div>
 
 <div class="solution" id="solution">
+
 <div class="solution-title">Richtige Lösung</div>
+
 <div class="grid" id="solutionGrid"></div>
+
 </div>
 
 <button class="secondary" onclick="back()">Neue Runde</button>
+
 </div>
+
 </div>
+
 
 <script>
-const numbers=["0","1","2","3","4","5","6","7","8","9"];
-const animals=[
-["🐰","Hase"],["🐱","Katze"],["🐶","Hund"],["🐦","Vogel"],
-["🐭","Maus"],["🐴","Pferd"],["🐮","Kuh"],["🐷","Schwein"],
-["🐔","Huhn"],["E","Esel"]
+
+const numbers=[
+  "0","1","2","3","4","5","6","7","8","9"
 ];
-const symbols=["★","■","●","✚","♥","◆","➜","+","−","×"];
-let sequence=[], interval;
+
+const animals=[
+  ["🐰","Hase"],
+  ["🐱","Katze"],
+  ["🐶","Hund"],
+  ["🐦","Vogel"],
+  ["🐭","Maus"],
+  ["🐴","Pferd"],
+  ["🐮","Kuh"],
+  ["🐷","Schwein"],
+  ["🐔","Huhn"],
+  ["🫏","Esel"]
+];
+
+const symbols=[
+  "★","■","●","✚","♥","◆","➜","+","−","×"
+];
+
+let sequence=[];
+let interval;
+
 
 function pool(type){
- if(type==="numbers") return numbers.map(x=>({v:x}));
- if(type==="symbols") return symbols.map(x=>({v:x}));
- if(type==="animals") return animals.map(x=>({v:x[0],label:x[1],animal:true}));
- return [
-  ...numbers.map(x=>({v:x})),
-  ...symbols.map(x=>({v:x})),
-  ...animals.map(x=>({v:x[0],label:x[1],animal:true}))
- ];
-}
 
-function makeSequence(type,n){
- const p=pool(type), a=[];
- for(let i=0;i<n;i++) a.push(p[Math.floor(Math.random()*p.length)]);
- return a;
-}
-
-function draw(el,a){
- el.innerHTML="";
- a.forEach(x=>{
-  const d=document.createElement("div");
-  d.className="tile"+(x.animal?" animal":"");
-  d.textContent=x.v;
-  if(x.label)d.title=x.label;
-  el.appendChild(d);
- });
-}
-
-function countdown(seconds,text,done){
- clearInterval(interval);
- let t=seconds;
- phase.textContent=text;
- timer.textContent=t;
- interval=setInterval(()=>{
-  t--;
-  timer.textContent=t;
-  if(t<=0){
-   clearInterval(interval);
-   done();
+  if(type==="numbers"){
+    return numbers.map(x=>({v:x}));
   }
- },1000);
+
+  if(type==="symbols"){
+    return symbols.map(x=>({v:x}));
+  }
+
+  if(type==="animals"){
+    return animals.map(x=>({
+      v:x[0],
+      label:x[1],
+      animal:true
+    }));
+  }
+
+  return [
+    ...numbers.map(x=>({v:x})),
+    ...symbols.map(x=>({v:x})),
+    ...animals.map(x=>({
+      v:x[0],
+      label:x[1],
+      animal:true
+    }))
+  ];
 }
 
-function start(){
- sequence=makeSequence(type.value,Number(count.value));
- settings.style.display="none";
- game.style.display="block";
- solution.style.display="none";
- grid.style.visibility="visible";
- hint.textContent="Merke dir Reihenfolge und Positionen.";
- draw(grid,sequence);
 
- countdown(Number(memory.value),"Merken!",()=>{
-  grid.style.visibility="hidden";
-  hint.textContent="Die Vorlage ist ausgeblendet. Lege jetzt deine Lösung.";
-  countdown(Number(solve.value),"Zeit zum Legen!",()=>{
-   grid.style.visibility="visible";
-   phase.textContent="Zeit ist um!";
-   timer.textContent="0";
-   hint.textContent="Hier ist die richtige Lösung.";
-   draw(solutionGrid,sequence);
-   solution.style.display="block";
+/* Zufällige Reihenfolge */
+function shuffle(array){
+
+  const a=[...array];
+
+  for(let i=a.length-1;i>0;i--){
+
+    const j=Math.floor(Math.random()*(i+1));
+
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+
+  return a;
+}
+
+
+/* Spielvorlage erzeugen */
+function makeSequence(type,n){
+
+  const p=pool(type);
+
+  /* Nur unterschiedliche Elemente */
+  if(duplicates.value==="unique"){
+
+    return shuffle(p).slice(0,n);
+  }
+
+  /* Doppelte Elemente erlaubt */
+  const a=[];
+
+  for(let i=0;i<n;i++){
+
+    a.push(
+      p[Math.floor(Math.random()*p.length)]
+    );
+  }
+
+  return a;
+}
+
+
+/* Elemente anzeigen */
+function draw(el,a){
+
+  el.innerHTML="";
+
+  a.forEach(x=>{
+
+    const d=document.createElement("div");
+
+    d.className=
+      "tile"+(x.animal?" animal":"");
+
+    d.textContent=x.v;
+
+    if(x.label){
+      d.title=x.label;
+    }
+
+    el.appendChild(d);
+
   });
- });
 }
 
-function back(){
- clearInterval(interval);
- game.style.display="none";
- settings.style.display="block";
- grid.style.visibility="visible";
+
+/* Countdown */
+function countdown(seconds,text,done){
+
+  clearInterval(interval);
+
+  let t=seconds;
+
+  phase.textContent=text;
+  timer.textContent=t;
+
+  interval=setInterval(()=>{
+
+    t--;
+
+    timer.textContent=t;
+
+    if(t<=0){
+
+      clearInterval(interval);
+
+      done();
+    }
+
+  },1000);
 }
+
+
+/* Neue Runde */
+function start(){
+
+  const anzahl=Number(count.value);
+
+  sequence=makeSequence(
+    type.value,
+    anzahl
+  );
+
+  settings.style.display="none";
+
+  game.style.display="block";
+
+  solution.style.display="none";
+
+  grid.style.visibility="visible";
+
+  hint.textContent=
+    "Merke dir Reihenfolge und Positionen.";
+
+  draw(grid,sequence);
+
+  countdown(
+    Number(memory.value),
+    "Merken!",
+    ()=>{
+
+      grid.style.visibility="hidden";
+
+      hint.textContent=
+        "Die Vorlage ist ausgeblendet. Lege jetzt deine Lösung.";
+
+      countdown(
+        Number(solve.value),
+        "Zeit zum Legen!",
+        ()=>{
+
+          grid.style.visibility="visible";
+
+          phase.textContent="Zeit ist um!";
+
+          timer.textContent="0";
+
+          hint.textContent=
+            "Hier ist die richtige Lösung.";
+
+          draw(
+            solutionGrid,
+            sequence
+          );
+
+          solution.style.display="block";
+
+        }
+      );
+
+    }
+  );
+}
+
+
+/* Zurück zu den Einstellungen */
+function back(){
+
+  clearInterval(interval);
+
+  game.style.display="none";
+
+  settings.style.display="block";
+
+  grid.style.visibility="visible";
+}
+
 </script>
+
 </body>
 </html>
