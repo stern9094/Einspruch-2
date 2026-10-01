@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EINSPRUCH</title>
+<title>Einspruch</title>
 
 <style>
 *{
@@ -97,25 +97,36 @@ button{
 
 .tile{
   aspect-ratio:1;
-  background:#fff;
+  background:#b8b8b8;
   border-radius:12px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:bold;
-  font-size:clamp(22px,7vw,34px);
-  box-shadow:0 2px 6px #0002;
+  font-size:clamp(26px,8vw,38px);
+  box-shadow:0 2px 6px #0003;
   overflow:hidden;
 }
 
-.animal{
-  padding:3px;
+/* Zahlen */
+.number{
+  color:#0645ad;
+  font-weight:900;
 }
 
-.animal svg{
-  width:94%;
-  height:94%;
-  display:block;
+/* Symbole */
+.symbol{
+  color:#a00000;
+  font-weight:900;
+}
+
+/* Tiere */
+.animal{
+  font-family:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    sans-serif;
 }
 
 .solution{
@@ -140,7 +151,8 @@ button{
 
 <div class="app">
 
-<h1>EINSPRUCH</h1>
+<h1>Einspruch</h1>
+
 
 <div class="settings" id="settings">
 
@@ -153,6 +165,7 @@ button{
   <option value="mixed">Gemischt</option>
 </select>
 
+
 <label>Merken</label>
 
 <select id="memory">
@@ -162,6 +175,7 @@ button{
   <option value="25">25 Sekunden</option>
   <option value="30">30 Sekunden</option>
 </select>
+
 
 <label>Anzahl Elemente</label>
 
@@ -175,12 +189,14 @@ button{
   <option value="10">10</option>
 </select>
 
+
 <label>Bilder</label>
 
 <select id="duplicates">
   <option value="unique">Ich möchte keine doppelten Bilder</option>
-  <option value="duplicates">Ich möchte auch Doppelte Bilder</option>
+  <option value="duplicates">Ich möchte doppelte Bilder</option>
 </select>
+
 
 <label>Zeit zum Legen</label>
 
@@ -192,9 +208,13 @@ button{
   <option value="90">90 Sekunden</option>
 </select>
 
-<button id="startButton">Neue Runde starten</button>
+
+<button id="startButton">
+  Neue Runde starten
+</button>
 
 </div>
+
 
 
 <div class="game" id="game">
@@ -207,6 +227,7 @@ button{
 
 <div class="grid" id="grid"></div>
 
+
 <div class="solution" id="solution">
 
 <div class="solution-title">
@@ -217,6 +238,7 @@ Richtige Lösung
 
 </div>
 
+
 <button class="secondary" id="backButton">
 Neue Runde
 </button>
@@ -224,6 +246,7 @@ Neue Runde
 </div>
 
 </div>
+
 
 
 <script>
@@ -279,10 +302,18 @@ const solutionGrid =
 
 
 /* =========================================
+   VARIABLEN
+========================================= */
+
+let sequence = [];
+let interval = null;
+
+
+/* =========================================
    ZAHLEN
 ========================================= */
 
-const numbers=[
+const numbers = [
   "0","1","2","3","4",
   "5","6","7","8","9"
 ];
@@ -292,440 +323,36 @@ const numbers=[
    SYMBOLE
 ========================================= */
 
-const symbols=[
-  "★","■","●","=","♥",
-  "◆","➜","+","−","×"
+const symbols = [
+  "★",
+  "■",
+  "●",
+  "=",
+  "♥",
+  "◆",
+  "➜",
+  "+",
+  "−",
+  "×"
 ];
 
 
 /* =========================================
-   NEUE TIERZEICHNUNGEN
+   TIERE
 ========================================= */
 
-const animals=[
-
-/* HASE */
-[
-"Hase",
-`
-<svg viewBox="0 0 120 120">
-<ellipse cx="60" cy="82" rx="31" ry="22" fill="#d8d8d8"/>
-<ellipse cx="39" cy="91" rx="10" ry="6" fill="#c4c4c4"/>
-<ellipse cx="81" cy="91" rx="10" ry="6" fill="#c4c4c4"/>
-
-<ellipse cx="43" cy="28" rx="10" ry="29" fill="#d8d8d8"/>
-<ellipse cx="77" cy="28" rx="10" ry="29" fill="#d8d8d8"/>
-
-<ellipse cx="43" cy="29" rx="4" ry="21" fill="#f3a6b5"/>
-<ellipse cx="77" cy="29" rx="4" ry="21" fill="#f3a6b5"/>
-
-<circle cx="60" cy="58" r="29" fill="#e5e5e5"/>
-
-<circle cx="49" cy="55" r="4" fill="#222"/>
-<circle cx="71" cy="55" r="4" fill="#222"/>
-
-<circle cx="60" cy="65" r="5" fill="#f08fa0"/>
-
-<path d="M60 70 Q54 77 48 73" fill="none"
-stroke="#555" stroke-width="2.5"
-stroke-linecap="round"/>
-
-<path d="M60 70 Q66 77 72 73" fill="none"
-stroke="#555" stroke-width="2.5"
-stroke-linecap="round"/>
-
-<path d="M35 65 L22 62 M35 70 L21 71"
-stroke="#777" stroke-width="2"/>
-
-<path d="M85 65 L98 62 M85 70 L99 71"
-stroke="#777" stroke-width="2"/>
-</svg>
-`
-],
-
-
-/* KATZE */
-[
-"Katze",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="60" cy="88" rx="30" ry="23" fill="#e99b55"/>
-
-<path d="M36 42 L34 16 L51 30
-Q60 26 69 30 L86 16 L84 44
-Q91 57 85 77
-Q78 94 60 96
-Q42 94 35 77
-Q29 57 36 42Z"
-fill="#efa45c"/>
-
-<path d="M37 23 L39 37 L49 31Z"
-fill="#e77f8c"/>
-
-<path d="M83 23 L81 37 L71 31Z"
-fill="#e77f8c"/>
-
-<circle cx="48" cy="55" r="4" fill="#222"/>
-<circle cx="72" cy="55" r="4" fill="#222"/>
-
-<ellipse cx="60" cy="67" rx="5" ry="4" fill="#d96b72"/>
-
-<path d="M60 70 Q53 77 47 73"
-fill="none" stroke="#555" stroke-width="2.5"/>
-
-<path d="M60 70 Q67 77 73 73"
-fill="none" stroke="#555" stroke-width="2.5"/>
-
-<path d="M35 67 L20 63 M35 72 L19 72"
-stroke="#777" stroke-width="2"/>
-
-<path d="M85 67 L100 63 M85 72 L101 72"
-stroke="#777" stroke-width="2"/>
-
-<path d="M89 91 Q104 82 101 67"
-fill="none" stroke="#efa45c" stroke-width="7"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* HUND */
-[
-"Hund",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="60" cy="87" rx="31" ry="24" fill="#c98952"/>
-
-<path d="M37 43
-Q27 28 18 32
-Q15 50 31 62
-L36 76
-Q43 94 60 96
-Q77 94 84 76
-L89 62
-Q105 50 102 32
-Q93 28 83 43
-Q73 35 60 37
-Q47 35 37 43Z"
-fill="#d3975f"/>
-
-<ellipse cx="31" cy="48" rx="13" ry="21" fill="#9b623b"/>
-<ellipse cx="89" cy="48" rx="13" ry="21" fill="#9b623b"/>
-
-<circle cx="47" cy="58" r="4" fill="#222"/>
-<circle cx="73" cy="58" r="4" fill="#222"/>
-
-<ellipse cx="60" cy="69" rx="9" ry="7" fill="#333"/>
-
-<path d="M60 75 Q54 81 49 77"
-fill="none" stroke="#555" stroke-width="2.5"/>
-
-<path d="M60 75 Q66 81 71 77"
-fill="none" stroke="#555" stroke-width="2.5"/>
-
-<path d="M31 89 Q23 96 27 103"
-fill="none" stroke="#9b623b" stroke-width="7"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* MAUS */
-[
-"Maus",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="60" cy="78" rx="28" ry="30" fill="#b9b9b9"/>
-
-<circle cx="36" cy="39" r="20" fill="#b9b9b9"/>
-<circle cx="84" cy="39" r="20" fill="#b9b9b9"/>
-
-<circle cx="36" cy="39" r="11" fill="#efa5b0"/>
-<circle cx="84" cy="39" r="11" fill="#efa5b0"/>
-
-<circle cx="49" cy="67" r="4" fill="#222"/>
-<circle cx="71" cy="67" r="4" fill="#222"/>
-
-<circle cx="60" cy="76" r="5" fill="#ef9ba8"/>
-
-<path d="M60 81 Q53 87 47 82"
-fill="none" stroke="#555" stroke-width="2"/>
-
-<path d="M60 81 Q67 87 73 82"
-fill="none" stroke="#555" stroke-width="2"/>
-
-<path d="M38 80 L19 75 M38 86 L18 87"
-stroke="#777" stroke-width="2"/>
-
-<path d="M82 80 L101 75 M82 86 L102 87"
-stroke="#777" stroke-width="2"/>
-
-<path d="M34 99 Q18 104 12 96"
-fill="none" stroke="#b9b9b9" stroke-width="6"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* PFERD */
-[
-"Pferd",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="60" cy="87" rx="31" ry="24" fill="#9a613d"/>
-
-<path d="M39 83
-Q30 66 35 45
-L29 18
-L49 31
-Q60 27 71 31
-L91 18
-L85 47
-Q92 67 81 84
-Q70 97 60 98
-Q50 97 39 83Z"
-fill="#b9794b"/>
-
-<path d="M35 45 Q28 56 35 70"
-fill="none" stroke="#70442d" stroke-width="9"/>
-
-<path d="M85 45 Q92 56 85 70"
-fill="none" stroke="#70442d" stroke-width="9"/>
-
-<path d="M45 33 Q38 21 43 12"
-fill="none" stroke="#5c3929" stroke-width="6"/>
-
-<path d="M75 33 Q82 21 77 12"
-fill="none" stroke="#5c3929" stroke-width="6"/>
-
-<circle cx="46" cy="55" r="4" fill="#222"/>
-<circle cx="74" cy="55" r="4" fill="#222"/>
-
-<ellipse cx="60" cy="70" rx="11" ry="8" fill="#8b5637"/>
-
-<circle cx="55" cy="70" r="2.5" fill="#222"/>
-<circle cx="65" cy="70" r="2.5" fill="#222"/>
-
-<path d="M39 93 Q27 103 20 96"
-fill="none" stroke="#70442d" stroke-width="7"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* KUH */
-[
-"Kuh",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="60" cy="87" rx="32" ry="25" fill="#fff"/>
-
-<path d="M34 43
-L25 23
-L43 31
-Q60 25 77 31
-L95 23
-L86 45
-Q91 60 85 76
-Q78 95 60 97
-Q42 95 35 76
-Q29 60 34 43Z"
-fill="#fff"/>
-
-<ellipse cx="43" cy="51" rx="11" ry="9" fill="#333"/>
-<ellipse cx="76" cy="72" rx="12" ry="10" fill="#333"/>
-<ellipse cx="67" cy="40" rx="8" ry="6" fill="#333"/>
-
-<path d="M31 29 Q22 20 18 25"
-fill="none" stroke="#b98b64" stroke-width="6"
-stroke-linecap="round"/>
-
-<path d="M89 29 Q98 20 102 25"
-fill="none" stroke="#b98b64" stroke-width="6"
-stroke-linecap="round"/>
-
-<circle cx="48" cy="57" r="4" fill="#222"/>
-<circle cx="72" cy="57" r="4" fill="#222"/>
-
-<ellipse cx="60" cy="71" rx="17" ry="11" fill="#efa4b2"/>
-
-<circle cx="54" cy="71" r="3" fill="#7c5960"/>
-<circle cx="66" cy="71" r="3" fill="#7c5960"/>
-
-<path d="M37 91 L31 104 M83 91 L89 104"
-stroke="#777" stroke-width="5"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* SCHWEIN */
-[
-"Schwein",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="60" cy="87" rx="31" ry="25" fill="#f5a4b5"/>
-
-<path d="M34 43
-L29 22
-L47 31
-Q60 27 73 31
-L91 22
-L86 45
-Q91 59 85 77
-Q77 95 60 97
-Q43 95 35 77
-Q29 59 34 43Z"
-fill="#f5a4b5"/>
-
-<path d="M31 27 L38 38 L45 32Z"
-fill="#e7859b"/>
-
-<path d="M89 27 L82 38 L75 32Z"
-fill="#e7859b"/>
-
-<circle cx="47" cy="55" r="4" fill="#222"/>
-<circle cx="73" cy="55" r="4" fill="#222"/>
-
-<ellipse cx="60" cy="70" rx="17" ry="11" fill="#e7869c"/>
-
-<ellipse cx="54" cy="70" rx="3.5" ry="4" fill="#7e5260"/>
-<ellipse cx="66" cy="70" rx="3.5" ry="4" fill="#7e5260"/>
-
-<path d="M36 91 Q25 101 20 95"
-fill="none" stroke="#e7869c" stroke-width="6"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* HUHN */
-[
-"Huhn",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="59" cy="79" rx="31" ry="27" fill="#fff"/>
-
-<circle cx="56" cy="43" r="24" fill="#fff"/>
-
-<path d="M42 23
-Q45 10 52 19
-Q59 7 64 19
-Q73 10 74 24"
-fill="#e64949"/>
-
-<path d="M76 43
-L103 51
-L76 59Z"
-fill="#f2a23a"/>
-
-<circle cx="62" cy="38" r="4" fill="#222"/>
-
-<ellipse cx="82" cy="82" rx="11" ry="6" fill="#ddd"/>
-
-<path d="M43 96 L38 108 M69 96 L74 108"
-stroke="#e99a35" stroke-width="5"
-stroke-linecap="round"/>
-
-<path d="M30 76 Q14 70 16 54"
-fill="none" stroke="#eee" stroke-width="10"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* SCHAF */
-[
-"Schaf",
-`
-<svg viewBox="0 0 120 120">
-
-<circle cx="43" cy="52" r="20" fill="#fff"/>
-<circle cx="60" cy="40" r="23" fill="#fff"/>
-<circle cx="78" cy="53" r="20" fill="#fff"/>
-<circle cx="60" cy="66" r="28" fill="#fff"/>
-
-<ellipse cx="30" cy="63" rx="15" ry="21" fill="#555"/>
-
-<circle cx="27" cy="59" r="3.5" fill="#222"/>
-<circle cx="35" cy="59" r="3.5" fill="#222"/>
-
-<path d="M26 70 Q31 74 36 70"
-fill="none" stroke="#222" stroke-width="2.5"/>
-
-<path d="M43 90 L39 105 M72 90 L77 105"
-stroke="#555" stroke-width="6"
-stroke-linecap="round"/>
-
-<path d="M85 73 Q101 77 99 91"
-fill="none" stroke="#fff" stroke-width="9"
-stroke-linecap="round"/>
-
-</svg>
-`
-],
-
-
-/* ENTE */
-[
-"Ente",
-`
-<svg viewBox="0 0 120 120">
-
-<ellipse cx="60" cy="80" rx="32" ry="25" fill="#fff"/>
-
-<circle cx="45" cy="46" r="23" fill="#fff"/>
-
-<path d="M31 29
-Q41 17 55 25
-Q63 18 68 30
-Q58 38 44 36Z"
-fill="#f0d94e"/>
-
-<path d="M64 43
-L101 51
-L64 61Z"
-fill="#ef9c32"/>
-
-<circle cx="48" cy="42" r="4" fill="#222"/>
-
-<path d="M40 97 L35 108"
-stroke="#e99a35" stroke-width="5"
-stroke-linecap="round"/>
-
-<path d="M68 97 L73 108"
-stroke="#e99a35" stroke-width="5"
-stroke-linecap="round"/>
-
-<path d="M31 77 Q17 70 19 57"
-fill="none" stroke="#e8e8e8"
-stroke-width="10"
-stroke-linecap="round"/>
-
-</svg>
-`
-]
+const animals = [
+
+  ["Hase","🐰"],
+  ["Katze","🐱"],
+  ["Hund","🐶"],
+  ["Maus","🐭"],
+  ["Pferd","🐴"],
+  ["Kuh","🐮"],
+  ["Schwein","🐷"],
+  ["Huhn","🐔"],
+  ["Schaf","🐑"],
+  ["Ente","🦆"]
 
 ];
 
@@ -736,27 +363,27 @@ stroke-linecap="round"/>
 
 function pool(type){
 
-  if(type==="numbers"){
+  if(type === "numbers"){
 
-    return numbers.map(x=>({
+    return numbers.map(x => ({
       v:x
     }));
 
   }
 
 
-  if(type==="symbols"){
+  if(type === "symbols"){
 
-    return symbols.map(x=>({
+    return symbols.map(x => ({
       v:x
     }));
 
   }
 
 
-  if(type==="animals"){
+  if(type === "animals"){
 
-    return animals.map(x=>({
+    return animals.map(x => ({
       v:x[1],
       label:x[0],
       animal:true
@@ -767,15 +394,15 @@ function pool(type){
 
   return [
 
-    ...numbers.map(x=>({
+    ...numbers.map(x => ({
       v:x
     })),
 
-    ...symbols.map(x=>({
+    ...symbols.map(x => ({
       v:x
     })),
 
-    ...animals.map(x=>({
+    ...animals.map(x => ({
       v:x[1],
       label:x[0],
       animal:true
@@ -792,18 +419,17 @@ function pool(type){
 
 function shuffle(array){
 
-  const a=[...array];
+  const a = [...array];
 
-  for(let i=a.length-1;i>0;i--){
+  for(let i = a.length - 1; i > 0; i--){
 
-    const j=Math.floor(
-      Math.random()*(i+1)
-    );
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
 
-    [a[i],a[j]]=[
-      a[j],
-      a[i]
-    ];
+    [a[i],a[j]] =
+      [a[j],a[i]];
 
   }
 
@@ -817,28 +443,24 @@ function shuffle(array){
 
 function makeSequence(type,n){
 
-  const p=pool(type);
+  const p = pool(type);
 
 
-  /* Jedes Element nur einmal */
-
-  if(duplicatesSelect.value==="unique"){
+  if(duplicatesSelect.value === "unique"){
 
     return shuffle(p).slice(0,n);
 
   }
 
 
-  /* Doppelte möglich */
+  const a = [];
 
-  const a=[];
-
-  for(let i=0;i<n;i++){
+  for(let i = 0; i < n; i++){
 
     a.push(
       p[
         Math.floor(
-          Math.random()*p.length
+          Math.random() * p.length
         )
       ]
     );
@@ -846,6 +468,7 @@ function makeSequence(type,n){
   }
 
   return a;
+
 }
 
 
@@ -855,32 +478,50 @@ function makeSequence(type,n){
 
 function draw(el,a){
 
-  el.innerHTML="";
+  el.innerHTML = "";
 
-  a.forEach(x=>{
+  a.forEach(x => {
 
-    const d=
+    const d =
       document.createElement("div");
 
-    d.className=
-      "tile"+
-      (x.animal ? " animal" : "");
 
+    d.className = "tile";
+
+
+    /* Tiere */
 
     if(x.animal){
 
-      d.innerHTML=x.v;
-
-    }else{
-
-      d.textContent=x.v;
+      d.classList.add("animal");
 
     }
 
 
+    /* Zahlen */
+
+    else if(numbers.includes(x.v)){
+
+      d.classList.add("number");
+
+    }
+
+
+    /* Symbole */
+
+    else if(symbols.includes(x.v)){
+
+      d.classList.add("symbol");
+
+    }
+
+
+    d.textContent = x.v;
+
+
     if(x.label){
 
-      d.title=x.label;
+      d.title = x.label;
 
     }
 
@@ -900,21 +541,21 @@ function countdown(seconds,text,done){
 
   clearInterval(interval);
 
-  let t=seconds;
+  let t = seconds;
 
-  phase.textContent=text;
+  phase.textContent = text;
 
-  timer.textContent=t;
+  timer.textContent = t;
 
 
-  interval=setInterval(()=>{
+  interval = setInterval(() => {
 
     t--;
 
-    timer.textContent=t;
+    timer.textContent = t;
 
 
-    if(t<=0){
+    if(t <= 0){
 
       clearInterval(interval);
 
@@ -933,124 +574,17 @@ function countdown(seconds,text,done){
 
 function start(){
 
-  const anzahl=
+  const anzahl =
     Number(countSelect.value);
 
 
-  sequence=
+  sequence =
     makeSequence(
       typeSelect.value,
       anzahl
     );
 
 
-  settings.style.display="none";
+  settings.style.display = "none";
 
-  game.style.display="block";
-
-  solution.style.display="none";
-
-  grid.style.visibility="visible";
-
-
-  hint.textContent=
-    "Merke dir Reihenfolge und Positionen.";
-
-
-  draw(
-    grid,
-    sequence
-  );
-
-
-  countdown(
-    Number(memorySelect.value),
-    "Merken!",
-    ()=>{
-
-      grid.style.visibility="hidden";
-
-
-      hint.textContent=
-        "Die Vorlage ist ausgeblendet. Lege jetzt deine Lösung.";
-
-
-      countdown(
-        Number(solveSelect.value),
-        "Zeit zum Legen!",
-        ()=>{
-
-          /*
-             Das ursprüngliche Spielfeld
-             bleibt verborgen.
-          */
-
-          grid.style.visibility="hidden";
-
-
-          phase.textContent=
-            "Zeit ist um!";
-
-
-          timer.textContent="0";
-
-
-          hint.textContent=
-            "Hier ist die richtige Lösung.";
-
-
-          draw(
-            solutionGrid,
-            sequence
-          );
-
-
-          solution.style.display="block";
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================
-   ZURÜCK
-========================================= */
-
-function back(){
-
-  clearInterval(interval);
-
-  game.style.display="none";
-
-  settings.style.display="block";
-
-  grid.style.visibility="visible";
-
-  solution.style.display="none";
-
-}
-
-
-/* =========================================
-   BUTTONS
-========================================= */
-
-startButton.addEventListener(
-  "click",
-  start
-);
-
-
-backButton.addEventListener(
-  "click",
-  back
-);
-
-</script>
-
-</body>
-</html>
+  game.style.display =
