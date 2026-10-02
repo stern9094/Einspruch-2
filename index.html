@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Einspruch</title>
+
+<title>Merkspiel</title>
 
 <style>
 
@@ -25,11 +26,10 @@ body {
   padding: 16px 14px;
 }
 
-h1 {
-  text-align: center;
-  margin: 4px 0 16px;
-  font-size: 28px;
-}
+
+/* =========================================
+   EINSTELLUNGEN
+========================================= */
 
 .settings {
   background: #fff;
@@ -71,6 +71,11 @@ button:active {
   transform: scale(0.98);
 }
 
+
+/* =========================================
+   SPIEL
+========================================= */
+
 .game {
   display: none;
   text-align: center;
@@ -79,39 +84,62 @@ button:active {
 .phase {
   font-size: 21px;
   font-weight: bold;
-  margin-top: 18px;
+  margin-top: 15px;
 }
 
 .timer {
   font-size: 48px;
   font-weight: bold;
-  margin: 4px;
+  margin: 3px;
 }
 
 .hint {
   font-size: 15px;
-  margin: 4px 0 14px;
+  margin: 4px 0 12px;
 }
+
+
+/* =========================================
+   SPIELFELD
+========================================= */
 
 .grid {
   width: min(92vw, 330px);
   margin: auto;
+
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
   gap: 8px;
 }
 
 .tile {
   aspect-ratio: 1;
+
   background: #b8b8b8;
+
   border-radius: 12px;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-weight: bold;
-  font-size: clamp(26px, 8vw, 38px);
-  box-shadow: 0 2px 6px #0003;
+
+  font-size:
+    clamp(26px, 8vw, 38px);
+
+  box-shadow:
+    0 2px 6px #0003;
+
   overflow: hidden;
+
+  position: relative;
+
+  user-select: none;
 }
 
 
@@ -136,82 +164,55 @@ button:active {
 
 
 /* =========================================
-   FARBIGE KREISE
+   FARBEN
 ========================================= */
 
 .color-circle {
   width: 62%;
   height: 62%;
+
   border-radius: 50%;
+
   border: 3px solid #222;
+
   display: block;
 }
-
-
-/* Schwarz */
 
 .circle-black {
   background: #000000;
 }
 
-
-/* Weiß */
-
 .circle-white {
   background: #ffffff;
 }
-
-
-/* Rot */
 
 .circle-red {
   background: #e00000;
 }
 
-
-/* Gelb */
-
 .circle-yellow {
   background: #ffd400;
 }
-
-
-/* Grün */
 
 .circle-green {
   background: #00a83b;
 }
 
-
-/* Blau */
-
 .circle-blue {
   background: #0066d6;
 }
-
-
-/* Orange */
 
 .circle-orange {
   background: #ff7a00;
 }
 
-
-/* Lila */
-
 .circle-purple {
   background: #7b22c9;
 }
 
-
-/* Braun */
-
 .circle-brown {
   background: #8b4a24;
 }
-
-
-/* Rosa */
 
 .circle-pink {
   background: #f05a9d;
@@ -219,23 +220,189 @@ button:active {
 
 
 /* =========================================
-   LÖSUNG
+   AUSGEWÄHLTES BILD
 ========================================= */
 
-.solution {
-  display: none;
+.tile.selected {
+
+  background: #d7d7d7;
+
+  box-shadow:
+    0 0 0 4px #222 inset,
+    0 2px 6px #0003;
 }
 
-.solution-title {
-  font-size: 22px;
-  font-weight: bold;
-  margin: 18px 0 10px;
+.tile.selected::after {
+
+  content: attr(data-number);
+
+  position: absolute;
+
+  right: 5px;
+  top: 5px;
+
+  min-width: 25px;
+  height: 25px;
+
+  border-radius: 50%;
+
+  background: #222;
+
+  color: white;
+
+  font-size: 15px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
 }
+
+
+/* =========================================
+   RICHTIG / FALSCH
+========================================= */
+
+.feedback {
+
+  display: none;
+
+  font-size: 38px;
+
+  font-weight: 900;
+
+  margin: 20px 0;
+
+  min-height: 48px;
+}
+
+.feedback.wrong {
+  color: #c00000;
+}
+
+.feedback.correct {
+  color: #16832c;
+}
+
+
+/* =========================================
+   ERGEBNIS
+========================================= */
+
+.result {
+
+  display: none;
+
+  margin-top: 18px;
+
+  padding: 16px;
+
+  border-radius: 14px;
+
+  background: #fff;
+
+  box-shadow:
+    0 2px 9px #0002;
+}
+
+.result-message {
+
+  font-size: 30px;
+
+  font-weight: 900;
+
+  margin-bottom: 12px;
+}
+
+.result.correct .result-message {
+  color: #16832c;
+}
+
+.result.wrong .result-message {
+  color: #c00000;
+}
+
+.result-info {
+
+  font-size: 14px;
+
+  color: #555;
+
+  margin-bottom: 15px;
+}
+
+.comparison-title {
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+  margin-bottom: 8px;
+}
+
+.comparison-label {
+
+  font-size: 13px;
+
+  font-weight: bold;
+
+  margin-top: 12px;
+
+  margin-bottom: 5px;
+}
+
+.small-grid {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 5px;
+}
+
+.small-grid .tile {
+
+  font-size: 22px;
+
+  border-radius: 7px;
+}
+
+.small-grid .color-circle {
+
+  width: 60%;
+  height: 60%;
+
+  border-width: 2px;
+}
+
+.small-grid .tile.selected::after {
+
+  font-size: 10px;
+
+  min-width: 17px;
+  height: 17px;
+
+  right: 2px;
+  top: 2px;
+}
+
+
+/* =========================================
+   ZURÜCK
+========================================= */
 
 .secondary {
+
   background: #fff;
+
   color: #222;
+
   border: 1px solid #888;
+
+  margin-top: 15px;
 }
 
 </style>
@@ -246,17 +413,18 @@ button:active {
 
 <div class="app">
 
-<h1>Einspruch</h1>
-
 
 <!-- =====================================
      EINSTELLUNGEN
 ===================================== -->
 
-<div class="settings" id="settings">
+<div
+  class="settings"
+  id="settings">
+
 
 <label for="type">
-Inhalt
+Thema
 </label>
 
 <select id="type">
@@ -281,7 +449,7 @@ Inhalt
 
 
 <label for="memory">
-Merken
+Zeit zum Merken
 </label>
 
 <select id="memory">
@@ -310,7 +478,7 @@ Merken
 
 
 <label for="count">
-Anzahl Elemente
+Anzahl der Bilder
 </label>
 
 <select id="count">
@@ -333,18 +501,18 @@ Bilder
 <select id="duplicates">
 
   <option value="unique">
-    Keine Doppelten Bilder
+    Nur einzeln
   </option>
 
   <option value="duplicates">
-    Doppelte Bilder möglich
+    Doppelte möglich
   </option>
 
 </select>
 
 
 <label for="solve">
-Zeit zum Legen
+Zeit
 </label>
 
 <select id="solve">
@@ -392,61 +560,95 @@ Zeit zum Legen
   id="game">
 
 
-  <div
-    class="phase"
-    id="phase">
-  </div>
+<div
+  class="phase"
+  id="phase">
+</div>
 
 
-  <div
-    class="timer"
-    id="timer">
-  </div>
+<div
+  class="timer"
+  id="timer">
+</div>
 
 
-  <div
-    class="hint"
-    id="hint">
-  </div>
+<div
+  class="hint"
+  id="hint">
+</div>
 
 
-  <div
-    class="grid"
-    id="grid">
-  </div>
+<div
+  class="feedback"
+  id="feedback">
+</div>
 
 
-  <!-- ===================================
-       LÖSUNG
-  ==================================== -->
-
-  <div
-    class="solution"
-    id="solution">
+<div
+  class="grid"
+  id="grid">
+</div>
 
 
-    <div class="solution-title">
-      Richtige Lösung
-    </div>
+<!-- =====================================
+     ERGEBNIS
+===================================== -->
+
+<div
+  class="result"
+  id="result">
 
 
-    <div
-      class="grid"
-      id="solutionGrid">
-    </div>
+<div
+  class="result-message"
+  id="resultMessage">
+</div>
 
 
-  </div>
+<div
+  class="result-info"
+  id="resultInfo">
+</div>
 
 
-  <button
-    type="button"
-    class="secondary"
-    id="backButton">
+<div class="comparison-title">
+  Vergleich
+</div>
 
-    Neue Runde
 
-  </button>
+<div class="comparison-label">
+  Richtige Lösung
+</div>
+
+
+<div
+  class="small-grid"
+  id="solutionGrid">
+</div>
+
+
+<div class="comparison-label">
+  Deine Eingabe
+</div>
+
+
+<div
+  class="small-grid"
+  id="answerGrid">
+</div>
+
+
+</div>
+
+
+<button
+  type="button"
+  class="secondary"
+  id="backButton">
+
+  Neue Runde
+
+</button>
 
 
 </div>
@@ -456,13 +658,22 @@ Zeit zum Legen
 
 <script>
 
+
 /* =========================================
    VARIABLEN
 ========================================= */
 
 let sequence = [];
 
+let selectionPool = [];
+
+let playerAnswer = [];
+
+let attempts = 0;
+
 let interval = null;
+
+let acceptingInput = false;
 
 
 /* =========================================
@@ -508,11 +719,23 @@ const hint =
 const grid =
   document.getElementById("grid");
 
-const solution =
-  document.getElementById("solution");
+const feedback =
+  document.getElementById("feedback");
+
+const result =
+  document.getElementById("result");
+
+const resultMessage =
+  document.getElementById("resultMessage");
+
+const resultInfo =
+  document.getElementById("resultInfo");
 
 const solutionGrid =
   document.getElementById("solutionGrid");
+
+const answerGrid =
+  document.getElementById("answerGrid");
 
 
 /* =========================================
@@ -620,9 +843,6 @@ const colors = [
 
 function pool(type) {
 
-
-  /* Zahlen */
-
   if (type === "numbers") {
 
     return numbers.map(function(x) {
@@ -636,8 +856,6 @@ function pool(type) {
 
   }
 
-
-  /* Symbole */
 
   if (type === "symbols") {
 
@@ -653,8 +871,6 @@ function pool(type) {
   }
 
 
-  /* Farben */
-
   if (type === "colors") {
 
     return colors.map(function(x) {
@@ -669,8 +885,6 @@ function pool(type) {
 
   }
 
-
-  /* Gemischt */
 
   return [
 
@@ -715,7 +929,6 @@ function shuffle(array) {
 
   const a = [...array];
 
-
   for (
     let i = a.length - 1;
     i > 0;
@@ -727,15 +940,16 @@ function shuffle(array) {
         Math.random() * (i + 1)
       );
 
+    const temp =
+      a[i];
 
-    const temp = a[i];
+    a[i] =
+      a[j];
 
-    a[i] = a[j];
-
-    a[j] = temp;
+    a[j] =
+      temp;
 
   }
-
 
   return a;
 
@@ -743,29 +957,25 @@ function shuffle(array) {
 
 
 /* =========================================
-   SEQUENZ ERSTELLEN
+   SEQUENZ
 ========================================= */
 
 function makeSequence(type, n) {
 
-  const p = pool(type);
-
-
-  /* Nur verschiedene Elemente */
+  const p =
+    pool(type);
 
   if (
-    duplicatesSelect.value === "unique"
+    duplicatesSelect.value ===
+    "unique"
   ) {
 
-    return shuffle(p).slice(0, n);
+    return shuffle(p)
+      .slice(0, n);
 
   }
 
-
-  /* Doppelte möglich */
-
   const a = [];
-
 
   for (
     let i = 0;
@@ -775,14 +985,15 @@ function makeSequence(type, n) {
 
     const index =
       Math.floor(
-        Math.random() * p.length
+        Math.random() *
+        p.length
       );
 
-
-    a.push(p[index]);
+    a.push(
+      p[index]
+    );
 
   }
-
 
   return a;
 
@@ -790,74 +1001,421 @@ function makeSequence(type, n) {
 
 
 /* =========================================
-   FELDER ZEICHNEN
+   VERGLEICH
+========================================= */
+
+function sameItem(a, b) {
+
+  if (!a || !b) {
+    return false;
+  }
+
+  return (
+    a.v === b.v &&
+    a.kind === b.kind
+  );
+
+}
+
+
+/* =========================================
+   BILD ERSTELLEN
+========================================= */
+
+function createTile(x) {
+
+  const d =
+    document.createElement("div");
+
+  d.className =
+    "tile";
+
+
+  if (
+    x.kind === "number"
+  ) {
+
+    d.classList.add(
+      "number"
+    );
+
+    d.textContent =
+      x.v;
+
+  }
+
+
+  else if (
+    x.kind === "symbol"
+  ) {
+
+    d.classList.add(
+      "symbol"
+    );
+
+    d.textContent =
+      x.v;
+
+  }
+
+
+  else if (
+    x.kind === "color"
+  ) {
+
+    const circle =
+      document.createElement(
+        "div"
+      );
+
+    circle.className =
+      "color-circle " +
+      x.v;
+
+    d.appendChild(
+      circle
+    );
+
+    d.title =
+      x.label;
+
+  }
+
+
+  return d;
+
+}
+
+
+/* =========================================
+   FELD ZEICHNEN
 ========================================= */
 
 function draw(el, array) {
 
-  el.innerHTML = "";
+  el.innerHTML =
+    "";
 
+  array.forEach(
+    function(x) {
 
-  array.forEach(function(x) {
-
-    const d =
-      document.createElement("div");
-
-
-    d.className = "tile";
-
-
-    /* ===============================
-       ZAHL
-    =============================== */
-
-    if (x.kind === "number") {
-
-      d.classList.add("number");
-
-      d.textContent = x.v;
+      el.appendChild(
+        createTile(x)
+      );
 
     }
+  );
+
+}
 
 
-    /* ===============================
-       SYMBOL
-    =============================== */
+/* =========================================
+   IMMER 10 AUSWAHLBILDER
+========================================= */
 
-    else if (x.kind === "symbol") {
+function makeSelectionPool() {
 
-      d.classList.add("symbol");
+  const p =
+    pool(
+      typeSelect.value
+    );
 
-      d.textContent = x.v;
+  let choices =
+    [...sequence];
+
+
+  const available =
+    p.filter(
+      function(item) {
+
+        return !sequence.some(
+          function(correct) {
+
+            return sameItem(
+              item,
+              correct
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  const wrong =
+    shuffle(
+      available
+    );
+
+
+  while (
+    choices.length < 10 &&
+    wrong.length > 0
+  ) {
+
+    choices.push(
+      wrong.shift()
+    );
+
+  }
+
+
+  while (
+    choices.length < 10
+  ) {
+
+    const randomItem =
+      p[
+        Math.floor(
+          Math.random() *
+          p.length
+        )
+      ];
+
+    choices.push(
+      randomItem
+    );
+
+  }
+
+
+  return shuffle(
+    choices.slice(0, 10)
+  );
+
+}
+
+
+/* =========================================
+   AUSWAHLFELD
+========================================= */
+
+function drawSelectionGrid() {
+
+  grid.innerHTML =
+    "";
+
+  selectionPool.forEach(
+    function(item, index) {
+
+      const tile =
+        createTile(item);
+
+      tile.dataset.index =
+        index;
+
+      tile.addEventListener(
+        "click",
+        function() {
+
+          selectTile(
+            tile,
+            index
+          );
+
+        }
+      );
+
+      grid.appendChild(
+        tile
+      );
 
     }
+  );
+
+}
 
 
-    /* ===============================
-       FARBE
-    =============================== */
+/* =========================================
+   BILD AUSWÄHLEN
+========================================= */
 
-    else if (x.kind === "color") {
+function selectTile(tile, index) {
 
-      const circle =
-        document.createElement("div");
+  if (!acceptingInput) {
+    return;
+  }
+
+  if (
+    tile.classList.contains(
+      "selected"
+    )
+  ) {
+
+    return;
+
+  }
+
+  const number =
+    playerAnswer.length + 1;
 
 
-      circle.className =
-        "color-circle " + x.v;
+  tile.classList.add(
+    "selected"
+  );
+
+  tile.dataset.number =
+    number;
 
 
-      d.appendChild(circle);
+  playerAnswer.push(
+    selectionPool[index]
+  );
 
 
-      d.title = x.label;
+  /*
+     SOFORT PRÜFEN:
+     Ist das gerade gewählte Bild
+     an dieser Stelle falsch?
+  */
 
-    }
+  const position =
+    playerAnswer.length - 1;
 
 
-    el.appendChild(d);
+  if (
+    !sameItem(
+      playerAnswer[position],
+      sequence[position]
+    )
+  ) {
 
-  });
+    wrongAnswer();
+
+    return;
+
+  }
+
+
+  /*
+     Alle Bilder richtig
+  */
+
+  if (
+    playerAnswer.length ===
+    sequence.length
+  ) {
+
+    correctAnswer();
+
+  }
+
+}
+
+
+/* =========================================
+   FALSCH
+========================================= */
+
+function wrongAnswer() {
+
+  acceptingInput =
+    false;
+
+  clearInterval(
+    interval
+  );
+
+  interval =
+    null;
+
+
+  feedback.textContent =
+    "Falsch";
+
+  feedback.className =
+    "feedback wrong";
+
+  feedback.style.display =
+    "block";
+
+
+  /*
+     FALSCH bleibt genau
+     zwei Sekunden sichtbar.
+  */
+
+  setTimeout(
+    function() {
+
+      feedback.style.display =
+        "none";
+
+
+      attempts++;
+
+
+      /*
+         Nach dem ersten falschen
+         Versuch gibt es genau noch
+         EINEN Versuch.
+      */
+
+      if (
+        attempts === 1
+      ) {
+
+        startLastAttempt();
+
+      }
+
+      else {
+
+        showResult(
+          false
+        );
+
+      }
+
+    },
+    2000
+  );
+
+}
+
+
+/* =========================================
+   RICHTIG
+========================================= */
+
+function correctAnswer() {
+
+  acceptingInput =
+    false;
+
+  clearInterval(
+    interval
+  );
+
+  interval =
+    null;
+
+  attempts++;
+
+  feedback.textContent =
+    "Richtig!";
+
+  feedback.className =
+    "feedback correct";
+
+  feedback.style.display =
+    "block";
+
+
+  setTimeout(
+    function() {
+
+      feedback.style.display =
+        "none";
+
+      showResult(
+        true
+      );
+
+    },
+    1000
+  );
 
 }
 
@@ -872,14 +1430,19 @@ function countdown(
   finished
 ) {
 
-  clearInterval(interval);
+  clearInterval(
+    interval
+  );
 
-  let t = seconds;
+  let t =
+    seconds;
 
 
-  phase.textContent = text;
+  phase.textContent =
+    text;
 
-  timer.textContent = t;
+  timer.textContent =
+    t;
 
 
   interval =
@@ -888,14 +1451,20 @@ function countdown(
 
         t--;
 
-        timer.textContent = t;
+        timer.textContent =
+          t;
 
 
-        if (t <= 0) {
+        if (
+          t <= 0
+        ) {
 
-          clearInterval(interval);
+          clearInterval(
+            interval
+          );
 
-          interval = null;
+          interval =
+            null;
 
           finished();
 
@@ -909,14 +1478,26 @@ function countdown(
 
 
 /* =========================================
-   NEUE RUNDE
+   START
 ========================================= */
 
 function startGame() {
 
-  clearInterval(interval);
+  clearInterval(
+    interval
+  );
 
-  interval = null;
+  interval =
+    null;
+
+  attempts =
+    0;
+
+  playerAnswer =
+    [];
+
+  acceptingInput =
+    false;
 
 
   const anzahl =
@@ -935,21 +1516,18 @@ function startGame() {
   settings.style.display =
     "none";
 
-
   game.style.display =
     "block";
 
+  result.style.display =
+    "none";
 
-  solution.style.display =
+  feedback.style.display =
     "none";
 
 
-  grid.style.visibility =
-    "visible";
-
-
   hint.textContent =
-    "Merke dir Reihenfolge und Positionen.";
+    "Merke dir die Bilder in dieser Reihenfolge.";
 
 
   draw(
@@ -968,58 +1546,7 @@ function startGame() {
 
     function() {
 
-
-      /* Vorlage verstecken */
-
-      grid.style.visibility =
-        "hidden";
-
-
-      hint.textContent =
-        "Die Vorlage ist ausgeblendet. Lege jetzt deine Lösung.";
-
-
-      /* Zeit zum Legen */
-
-      countdown(
-
-        Number(
-          solveSelect.value
-        ),
-
-        "Zeit zum Legen!",
-
-        function() {
-
-
-          grid.style.visibility =
-            "hidden";
-
-
-          phase.textContent =
-            "Zeit ist um!";
-
-
-          timer.textContent =
-            "0";
-
-
-          hint.textContent =
-            "Hier ist die richtige Lösung.";
-
-
-          draw(
-            solutionGrid,
-            sequence
-          );
-
-
-          solution.style.display =
-            "block";
-
-        }
-
-      );
+      showTwoAttemptsMessage();
 
     }
 
@@ -1029,14 +1556,277 @@ function startGame() {
 
 
 /* =========================================
-   ZURÜCK
+   NACH DER MERKZEIT
+========================================= */
+
+function showTwoAttemptsMessage() {
+
+  clearInterval(
+    interval
+  );
+
+  interval =
+    null;
+
+
+  phase.textContent =
+    "Nur zwei Versuche!";
+
+  timer.textContent =
+    "";
+
+  hint.textContent =
+    "";
+
+  grid.innerHTML =
+    "";
+
+
+  /*
+     Der Hinweis wird zwei Sekunden
+     angezeigt.
+  */
+
+  setTimeout(
+    function() {
+
+      startFirstAttempt();
+
+    },
+    2000
+  );
+
+}
+
+
+/* =========================================
+   ERSTER VERSUCH
+========================================= */
+
+function startFirstAttempt() {
+
+  playerAnswer =
+    [];
+
+  acceptingInput =
+    true;
+
+
+  selectionPool =
+    makeSelectionPool();
+
+
+  phase.textContent =
+    "1. Versuch";
+
+
+  hint.textContent =
+    "Wähle die Bilder in der richtigen Reihenfolge.";
+
+
+  drawSelectionGrid();
+
+
+  countdown(
+
+    Number(
+      solveSelect.value
+    ),
+
+    "Zeit!",
+
+    function() {
+
+      if (
+        acceptingInput
+      ) {
+
+        acceptingInput =
+          false;
+
+        attempts++;
+
+        showResult(
+          false
+        );
+
+      }
+
+    }
+
+  );
+
+}
+
+
+/* =========================================
+   LETZTER VERSUCH
+========================================= */
+
+function startLastAttempt() {
+
+  playerAnswer =
+    [];
+
+  acceptingInput =
+    true;
+
+
+  selectionPool =
+    makeSelectionPool();
+
+
+  phase.textContent =
+    "Nur ein Versuch!";
+
+
+  timer.textContent =
+    "";
+
+
+  hint.textContent =
+    "Letzter Versuch – wähle deine Bilder in der richtigen Reihenfolge.";
+
+
+  drawSelectionGrid();
+
+
+  countdown(
+
+    Number(
+      solveSelect.value
+    ),
+
+    "Zeit!",
+
+    function() {
+
+      if (
+        acceptingInput
+      ) {
+
+        acceptingInput =
+          false;
+
+        attempts++;
+
+        showResult(
+          false
+        );
+
+      }
+
+    }
+
+  );
+
+}
+
+
+/* =========================================
+   ERGEBNIS
+========================================= */
+
+function showResult(correct) {
+
+  acceptingInput =
+    false;
+
+  clearInterval(
+    interval
+  );
+
+  interval =
+    null;
+
+
+  phase.textContent =
+    "Ergebnis";
+
+
+  timer.textContent =
+    "";
+
+
+  grid.innerHTML =
+    "";
+
+
+  feedback.style.display =
+    "none";
+
+
+  if (correct) {
+
+    result.className =
+      "result correct";
+
+
+    resultMessage.textContent =
+      "Richtig!";
+
+
+    resultInfo.textContent =
+      "Geschafft – du hast " +
+      attempts +
+      " von 2 Versuchen benötigt.";
+
+  }
+
+  else {
+
+    result.className =
+      "result wrong";
+
+
+    resultMessage.textContent =
+      "Falsch";
+
+
+    resultInfo.textContent =
+      "Beide Versuche waren falsch.";
+
+  }
+
+
+  draw(
+    solutionGrid,
+    sequence
+  );
+
+
+  draw(
+    answerGrid,
+    playerAnswer
+  );
+
+
+  result.style.display =
+    "block";
+
+
+  hint.textContent =
+    "Hier siehst du die richtige Lösung und deine Eingabe zum Vergleich.";
+
+}
+
+
+/* =========================================
+   NEUE RUNDE
 ========================================= */
 
 function backToSettings() {
 
-  clearInterval(interval);
+  clearInterval(
+    interval
+  );
 
-  interval = null;
+  interval =
+    null;
+
+
+  acceptingInput =
+    false;
 
 
   game.style.display =
@@ -1047,29 +1837,29 @@ function backToSettings() {
     "block";
 
 
-  grid.style.visibility =
-    "visible";
-
-
-  solution.style.display =
-    "none";
-
-
   grid.innerHTML =
     "";
 
-
   solutionGrid.innerHTML =
     "";
+
+  answerGrid.innerHTML =
+    "";
+
+
+  result.style.display =
+    "none";
+
+
+  feedback.style.display =
+    "none";
 
 
   phase.textContent =
     "";
 
-
   timer.textContent =
     "";
-
 
   hint.textContent =
     "";
