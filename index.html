@@ -3,15 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Merkspiel</title>
-
+<title>Total Verschnurrt – Raum 4</title>
 <style>
-
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
   min-height: 100vh;
@@ -19,1884 +15,388 @@ body {
   background: #f2f0e8;
   color: #222;
 }
-
 .app {
-  max-width: 430px;
+  width: 100%;
+  max-width: 500px;
   margin: auto;
-  padding: 16px 14px;
+  padding: 16px;
 }
-
-
-/* =========================================
-   EINSTELLUNGEN
-========================================= */
-
-.settings {
-  background: #fff;
-  padding: 15px;
-  border-radius: 14px;
+.header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.title {
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.subtitle {
+  font-size: 16px;
+  color: #555;
+}
+.menu {
+  background: white;
+  padding: 16px;
+  border-radius: 15px;
   box-shadow: 0 2px 9px #0002;
 }
-
 label {
   display: block;
   font-weight: bold;
   margin: 10px 0 5px;
 }
-
 select,
 button {
   width: 100%;
   font-size: 18px;
-  padding: 11px;
+  padding: 12px;
   border-radius: 10px;
 }
-
 select {
   border: 1px solid #aaa;
-  background: #fff;
+  background: white;
 }
-
 button {
   margin-top: 14px;
   border: 0;
   background: #222;
-  color: #fff;
+  color: white;
   font-weight: bold;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-
 button:active {
-  transform: scale(0.98);
+  transform: scale(.98);
 }
-
-
-/* =========================================
-   SPIEL
-========================================= */
-
+.task-preview {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f0f0f0;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: left;
+  display: none;
+}
+.task-preview strong {
+  font-weight: 900;
+}
 .game {
   display: none;
   text-align: center;
+  padding-top: 10px;
 }
-
-.phase {
-  font-size: 21px;
-  font-weight: bold;
-  margin-top: 15px;
+.game-task {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 9px #0002;
+  font-size: 26px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  text-align: center;
+  display: none;
 }
-
-.timer {
-  font-size: 48px;
-  font-weight: bold;
-  margin: 3px;
-}
-
-.hint {
-  font-size: 15px;
-  margin: 4px 0 12px;
-}
-
-
-/* =========================================
-   SPIELFELD
-========================================= */
-
-.grid {
-  width: min(92vw, 330px);
-  margin: auto;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 8px;
-}
-
-.tile {
-  aspect-ratio: 1;
-
-  background: #b8b8b8;
-
-  border-radius: 12px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  font-weight: bold;
-
-  font-size:
-    clamp(26px, 8vw, 38px);
-
-  box-shadow:
-    0 2px 6px #0003;
-
-  overflow: hidden;
-
-  position: relative;
-
-  user-select: none;
-}
-
-
-/* =========================================
-   ZAHLEN
-========================================= */
-
-.number {
-  color: #0645ad;
-  font-weight: 900;
-}
-
-
-/* =========================================
-   SYMBOLE
-========================================= */
-
-.symbol {
-  color: #a00000;
-  font-weight: 900;
-}
-
-
-/* =========================================
-   FARBEN
-========================================= */
-
-.color-circle {
-  width: 62%;
-  height: 62%;
-
-  border-radius: 50%;
-
-  border: 3px solid #222;
-
-  display: block;
-}
-
-.circle-black {
-  background: #000000;
-}
-
-.circle-white {
-  background: #ffffff;
-}
-
-.circle-red {
-  background: #e00000;
-}
-
-.circle-yellow {
-  background: #ffd400;
-}
-
-.circle-green {
-  background: #00a83b;
-}
-
-.circle-blue {
-  background: #0066d6;
-}
-
-.circle-orange {
-  background: #ff7a00;
-}
-
-.circle-purple {
-  background: #7b22c9;
-}
-
-.circle-brown {
-  background: #8b4a24;
-}
-
-.circle-pink {
-  background: #f05a9d;
-}
-
-
-/* =========================================
-   AUSGEWÄHLTES BILD
-========================================= */
-
-.tile.selected {
-
-  background: #d7d7d7;
-
-  box-shadow:
-    0 0 0 4px #222 inset,
-    0 2px 6px #0003;
-}
-
-.tile.selected::after {
-
-  content: attr(data-number);
-
-  position: absolute;
-
-  right: 5px;
-  top: 5px;
-
-  min-width: 25px;
-  height: 25px;
-
-  border-radius: 50%;
-
+.timer-box {
+  margin-top: 10px;
+  padding: 36px 20px;
+  border-radius: 18px;
   background: #222;
-
   color: white;
-
-  font-size: 15px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
 }
-
-
-/* =========================================
-   RICHTIG / FALSCH
-========================================= */
-
-.feedback {
-
-  display: none;
-
-  font-size: 38px;
-
+.timer {
+  font-size: 110px;
+  line-height: 1;
   font-weight: 900;
-
-  margin: 20px 0;
-
-  min-height: 48px;
+  font-variant-numeric: tabular-nums;
 }
-
-.feedback.wrong {
-  color: #c00000;
+.timer.warning {
+  color: #ffd400;
 }
-
-.feedback.correct {
-  color: #16832c;
+.timer.danger {
+  color: #ff4b4b;
 }
-
-
-/* =========================================
-   ERGEBNIS
-========================================= */
-
-.result {
-
-  display: none;
-
-  margin-top: 18px;
-
-  padding: 16px;
-
-  border-radius: 14px;
-
-  background: #fff;
-
-  box-shadow:
-    0 2px 9px #0002;
-}
-
-.result-message {
-
-  font-size: 30px;
-
+.status {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 15px;
+  background: white;
+  font-size: 20px;
   font-weight: 900;
-
-  margin-bottom: 12px;
+  line-height: 1.4;
 }
-
-.result.correct .result-message {
+.status.observe {
+  color: #0645ad;
+}
+.status.transition {
+  color: #a00000;
+  background: #fff1f1;
+}
+.status.decide {
+  color: #a00000;
+  background: #fff1f1;
+}
+.status.finished {
   color: #16832c;
+  background: #e8f5e9;
 }
-
-.result.wrong .result-message {
-  color: #c00000;
-}
-
-.result-info {
-
-  font-size: 14px;
-
-  color: #555;
-
-  margin-bottom: 15px;
-}
-
-.comparison-title {
-
-  font-size: 18px;
-
-  font-weight: bold;
-
-  margin-bottom: 8px;
-}
-
-.comparison-label {
-
-  font-size: 13px;
-
-  font-weight: bold;
-
-  margin-top: 12px;
-
-  margin-bottom: 5px;
-}
-
-.small-grid {
-
-  width: 100%;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 5px;
-}
-
-.small-grid .tile {
-
-  font-size: 22px;
-
-  border-radius: 7px;
-}
-
-.small-grid .color-circle {
-
-  width: 60%;
-  height: 60%;
-
-  border-width: 2px;
-}
-
-.small-grid .tile.selected::after {
-
-  font-size: 10px;
-
-  min-width: 17px;
-  height: 17px;
-
-  right: 2px;
-  top: 2px;
-}
-
-
-/* =========================================
-   ZURÜCK
-========================================= */
-
 .secondary {
-
-  background: #fff;
-
+  background: white;
   color: #222;
-
   border: 1px solid #888;
-
-  margin-top: 15px;
+  margin-top: 20px;
+  display: none;
 }
-
 </style>
 </head>
-
-
 <body>
-
 <div class="app">
+  <div class="header">
+    <div class="title">TOTAL VERSCHNURRT</div>
+    <div class="subtitle">Raum 4</div>
+  </div>
 
+  <div class="menu" id="menu">
+    <label for="difficulty">Schwierigkeit</label>
+    <select id="difficulty">
+      <option value="easy">🟢 Leicht (1 Schnur) – 25 Sek.</option>
+      <option value="medium">🟡 Mittel (2 Schnüre) – 30 Sek.</option>
+      <option value="hard">🟠 Schwer (3 Schnüre) – 35 Sek.</option>
+      <option value="veryhard">🔴 Sehr schwer (4 Schnüre) – 40 Sek.</option>
+    </select>
+    <div class="task-preview" id="taskPreview"></div>
+    <button type="button" id="startButton">Runde starten</button>
+  </div>
 
-<!-- =====================================
-     EINSTELLUNGEN
-===================================== -->
-
-<div
-  class="settings"
-  id="settings">
-
-
-<label for="type">
-  Thema
-</label>
-
-<select id="type">
-
-  <option value="numbers">
-    Zahlen
-  </option>
-
-  <option value="colors">
-    Farben
-  </option>
-
-  <option value="symbols">
-    Symbole
-  </option>
-
-  <option value="mixed">
-    Gemischt
-  </option>
-
-</select>
-
-
-<label for="memory">
-  Zeit zum Merken
-</label>
-
-<select id="memory">
-
-  <option value="10">
-    10 Sekunden
-  </option>
-
-  <option value="15">
-    15 Sekunden
-  </option>
-
-  <option value="20">
-    20 Sekunden
-  </option>
-
-  <option value="25">
-    25 Sekunden
-  </option>
-
-  <option value="30">
-    30 Sekunden
-  </option>
-
-</select>
-
-
-<label for="count">
-  Anzahl der Bilder
-</label>
-
-<select id="count">
-
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-
-</select>
-
-
-<label for="duplicates">
-  Bilder
-</label>
-
-<select id="duplicates">
-
-  <option value="unique">
-    Nur einzeln
-  </option>
-
-  <option value="duplicates">
-    Doppelte möglich
-  </option>
-
-</select>
-
-
-<label for="solve">
-  Zeit
-</label>
-
-<select id="solve">
-
-  <option value="30">
-    30 Sekunden
-  </option>
-
-  <option value="45">
-    45 Sekunden
-  </option>
-
-  <option value="60">
-    60 Sekunden
-  </option>
-
-  <option value="75">
-    75 Sekunden
-  </option>
-
-  <option value="90">
-    90 Sekunden
-  </option>
-
-</select>
-
-
-<button
-  type="button"
-  id="startButton">
-
-  Neue Runde starten
-
-</button>
-
-
+  <div class="game" id="game">
+    <div class="game-task" id="gameTask"></div>
+    <div class="timer-box">
+      <div class="timer" id="timer">0</div>
+    </div>
+    <div class="status observe" id="status">Zeit läuft …</div>
+    <button type="button" class="secondary" id="newRoundButton">Neue Runde</button>
+  </div>
 </div>
-
-
-<!-- =====================================
-     SPIEL
-===================================== -->
-
-<div
-  class="game"
-  id="game">
-
-
-<div
-  class="phase"
-  id="phase">
-</div>
-
-
-<div
-  class="timer"
-  id="timer">
-</div>
-
-
-<div
-  class="hint"
-  id="hint">
-</div>
-
-
-<div
-  class="feedback"
-  id="feedback">
-</div>
-
-
-<div
-  class="grid"
-  id="grid">
-</div>
-
-
-<!-- =====================================
-     ERGEBNIS
-===================================== -->
-
-<div
-  class="result"
-  id="result">
-
-
-<div
-  class="result-message"
-  id="resultMessage">
-</div>
-
-
-<div
-  class="result-info"
-  id="resultInfo">
-</div>
-
-
-<div class="comparison-title">
-  Vergleich
-</div>
-
-
-<div class="comparison-label">
-  Richtige Lösung
-</div>
-
-
-<div
-  class="small-grid"
-  id="solutionGrid">
-</div>
-
-
-<div class="comparison-label">
-  Deine Eingabe
-</div>
-
-
-<div
-  class="small-grid"
-  id="answerGrid">
-</div>
-
-
-<button
-  type="button"
-  class="secondary"
-  id="backButton">
-
-  Neue Runde
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
 
 <script>
+const times = {
+  easy: 25,
+  medium: 30,
+  hard: 35,
+  veryhard: 40
+};
+const TRANSITION_TIME = 5;
+const DECIDE_TIME = 20;
 
+const tasks = {
+  easy: [
+    { full: "Unter welcher Zahl ist die <strong>rote</strong> Kugel versteckt?<br><br>Verfolge die rote Schnur nur mit den Augen.", short: "<strong>Rot</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>orange</strong> Kugel versteckt?<br><br>Verfolge die orange Schnur nur mit den Augen.", short: "<strong>Orange</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge die grüne Schnur nur mit den Augen.", short: "<strong>Grün</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die gelbe Schnur nur mit den Augen.", short: "<strong>Gelb</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>rote</strong> Kugel versteckt?<br><br>Verfolge die rote Schnur nur mit den Augen.", short: "<strong>Rot</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>orange</strong> Kugel versteckt?<br><br>Verfolge die orange Schnur nur mit den Augen.", short: "<strong>Orange</strong>" }
+  ],
+  medium: [
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong> und die <strong>orange</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Grün</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Grün</strong>" }
+  ],
+  hard: [
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>orange</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong>, die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>orange</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>orange</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong>, die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" }
+  ],
+  veryhard: [
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" }
+  ]
+};
 
-/* =========================================
-   VARIABLEN
-========================================= */
+const taskIndex = {
+  easy: 0,
+  medium: 0,
+  hard: 0,
+  veryhard: 0
+};
 
-let sequence = [];
-
-let selectionPool = [];
-
-let playerAnswer = [];
-
-let attempts = 0;
+const menu = document.getElementById("menu");
+const game = document.getElementById("game");
+const difficulty = document.getElementById("difficulty");
+const taskPreview = document.getElementById("taskPreview");
+const gameTask = document.getElementById("gameTask");
+const startButton = document.getElementById("startButton");
+const timer = document.getElementById("timer");
+const status = document.getElementById("status");
+const newRoundButton = document.getElementById("newRoundButton");
 
 let interval = null;
+let currentTask = null;
+let currentTime = 25;
 
-let acceptingInput = false;
+function playKlingelton() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
 
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.value = 880;
+    gain1.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain1.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + 0.02);
+    gain1.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(ctx.currentTime);
+    osc1.stop(ctx.currentTime + 0.35);
 
-/* =========================================
-   ELEMENTE
-========================================= */
-
-const settings =
-  document.getElementById("settings");
-
-const game =
-  document.getElementById("game");
-
-const typeSelect =
-  document.getElementById("type");
-
-const memorySelect =
-  document.getElementById("memory");
-
-const countSelect =
-  document.getElementById("count");
-
-const duplicatesSelect =
-  document.getElementById("duplicates");
-
-const solveSelect =
-  document.getElementById("solve");
-
-const startButton =
-  document.getElementById("startButton");
-
-const backButton =
-  document.getElementById("backButton");
-
-const phase =
-  document.getElementById("phase");
-
-const timer =
-  document.getElementById("timer");
-
-const hint =
-  document.getElementById("hint");
-
-const grid =
-  document.getElementById("grid");
-
-const feedback =
-  document.getElementById("feedback");
-
-const result =
-  document.getElementById("result");
-
-const resultMessage =
-  document.getElementById("resultMessage");
-
-const resultInfo =
-  document.getElementById("resultInfo");
-
-const solutionGrid =
-  document.getElementById("solutionGrid");
-
-const answerGrid =
-  document.getElementById("answerGrid");
-
-
-/* =========================================
-   ZAHLEN
-========================================= */
-
-const numbers = [
-
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9"
-
-];
-
-
-/* =========================================
-   SYMBOLE
-========================================= */
-
-const symbols = [
-
-  "★",
-  "■",
-  "●",
-  "=",
-  "♥",
-  "◆",
-  "➜",
-  "+",
-  "−",
-  "×"
-
-];
-
-
-/* =========================================
-   FARBEN
-========================================= */
-
-const colors = [
-
-  {
-    name: "Schwarz",
-    className: "circle-black"
-  },
-
-  {
-    name: "Weiß",
-    className: "circle-white"
-  },
-
-  {
-    name: "Rot",
-    className: "circle-red"
-  },
-
-  {
-    name: "Gelb",
-    className: "circle-yellow"
-  },
-
-  {
-    name: "Grün",
-    className: "circle-green"
-  },
-
-  {
-    name: "Blau",
-    className: "circle-blue"
-  },
-
-  {
-    name: "Orange",
-    className: "circle-orange"
-  },
-
-  {
-    name: "Lila",
-    className: "circle-purple"
-  },
-
-  {
-    name: "Braun",
-    className: "circle-brown"
-  },
-
-  {
-    name: "Rosa",
-    className: "circle-pink"
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.value = 660;
+    gain2.gain.setValueAtTime(0.0001, ctx.currentTime + 0.4);
+    gain2.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + 0.42);
+    gain2.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.75);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(ctx.currentTime + 0.4);
+    osc2.stop(ctx.currentTime + 0.75);
+  } catch (e) {
+    console.log("Klingelton konnte nicht abgespielt werden.");
   }
-
-];
-
-
-/* =========================================
-   POOL
-========================================= */
-
-function pool(type) {
-
-  if (type === "numbers") {
-
-    return numbers.map(function(x) {
-
-      return {
-        v: x,
-        kind: "number"
-      };
-
-    });
-
-  }
-
-
-  if (type === "symbols") {
-
-    return symbols.map(function(x) {
-
-      return {
-        v: x,
-        kind: "symbol"
-      };
-
-    });
-
-  }
-
-
-  if (type === "colors") {
-
-    return colors.map(function(x) {
-
-      return {
-        v: x.className,
-        label: x.name,
-        kind: "color"
-      };
-
-    });
-
-  }
-
-
-  return [
-
-    ...numbers.map(function(x) {
-
-      return {
-        v: x,
-        kind: "number"
-      };
-
-    }),
-
-    ...symbols.map(function(x) {
-
-      return {
-        v: x,
-        kind: "symbol"
-      };
-
-    }),
-
-    ...colors.map(function(x) {
-
-      return {
-        v: x.className,
-        label: x.name,
-        kind: "color"
-      };
-
-    })
-
-  ];
-
 }
 
-
-/* =========================================
-   MISCHEN
-========================================= */
-
-function shuffle(array) {
-
-  const a = [...array];
-
-  for (
-    let i = a.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const j =
-      Math.floor(
-        Math.random() * (i + 1)
-      );
-
-    const temp =
-      a[i];
-
-    a[i] =
-      a[j];
-
-    a[j] =
-      temp;
-
-  }
-
-  return a;
-
+function stopTimer() {
+  clearInterval(interval);
+  interval = null;
 }
 
+function startObservationTimer(seconds) {
+  stopTimer();
+  gameTask.style.display = "block";
+  gameTask.innerHTML = currentTask.short;
 
-/* =========================================
-   SEQUENZ
-========================================= */
+  let time = seconds;
+  timer.textContent = time;
+  timer.className = "timer";
+  status.className = "status observe";
+  status.textContent = "Nur mit den Augen verfolgen!";
+  newRoundButton.style.display = "none";
 
-function makeSequence(type, n) {
+  interval = setInterval(function () {
+    time--;
+    timer.textContent = time;
 
-  const p =
-    pool(type);
-
-  if (
-    duplicatesSelect.value ===
-    "unique"
-  ) {
-
-    return shuffle(p)
-      .slice(0, n);
-
-  }
-
-  const a = [];
-
-  for (
-    let i = 0;
-    i < n;
-    i++
-  ) {
-
-    const index =
-      Math.floor(
-        Math.random() *
-        p.length
-      );
-
-    a.push(
-      p[index]
-    );
-
-  }
-
-  return a;
-
-}
-
-
-/* =========================================
-   VERGLEICH
-========================================= */
-
-function sameItem(a, b) {
-
-  if (!a || !b) {
-    return false;
-  }
-
-  return (
-    a.v === b.v &&
-    a.kind === b.kind
-  );
-
-}
-
-
-/* =========================================
-   BILD ERSTELLEN
-========================================= */
-
-function createTile(x) {
-
-  const d =
-    document.createElement("div");
-
-  d.className =
-    "tile";
-
-
-  if (
-    x.kind === "number"
-  ) {
-
-    d.classList.add(
-      "number"
-    );
-
-    d.textContent =
-      x.v;
-
-  }
-
-
-  else if (
-    x.kind === "symbol"
-  ) {
-
-    d.classList.add(
-      "symbol"
-    );
-
-    d.textContent =
-      x.v;
-
-  }
-
-
-  else if (
-    x.kind === "color"
-  ) {
-
-    const circle =
-      document.createElement(
-        "div"
-      );
-
-    circle.className =
-      "color-circle " +
-      x.v;
-
-    d.appendChild(
-      circle
-    );
-
-    d.title =
-      x.label;
-
-  }
-
-
-  return d;
-
-}
-
-
-/* =========================================
-   FELD ZEICHNEN
-========================================= */
-
-function draw(el, array) {
-
-  el.innerHTML =
-    "";
-
-  array.forEach(
-    function(x) {
-
-      el.appendChild(
-        createTile(x)
-      );
-
+    if (time <= 10 && time > 5) {
+      timer.classList.add("warning");
     }
-  );
-
-}
-
-
-/* =========================================
-   IMMER 10 AUSWAHLBILDER
-========================================= */
-
-function makeSelectionPool() {
-
-  const p =
-    pool(
-      typeSelect.value
-    );
-
-  let choices =
-    [...sequence];
-
-
-  const available =
-    p.filter(
-      function(item) {
-
-        return !sequence.some(
-          function(correct) {
-
-            return sameItem(
-              item,
-              correct
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-  const wrong =
-    shuffle(
-      available
-    );
-
-
-  while (
-    choices.length < 10 &&
-    wrong.length > 0
-  ) {
-
-    choices.push(
-      wrong.shift()
-    );
-
-  }
-
-
-  while (
-    choices.length < 10
-  ) {
-
-    const randomItem =
-      p[
-        Math.floor(
-          Math.random() *
-          p.length
-        )
-      ];
-
-    choices.push(
-      randomItem
-    );
-
-  }
-
-
-  return shuffle(
-    choices.slice(0, 10)
-  );
-
-}
-
-
-/* =========================================
-   AUSWAHLFELD
-========================================= */
-
-function drawSelectionGrid() {
-
-  grid.innerHTML =
-    "";
-
-  selectionPool.forEach(
-    function(item, index) {
-
-      const tile =
-        createTile(item);
-
-      tile.dataset.index =
-        index;
-
-      tile.addEventListener(
-        "click",
-        function() {
-
-          selectTile(
-            tile,
-            index
-          );
-
-        }
-      );
-
-      grid.appendChild(
-        tile
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================
-   BILD AUSWÄHLEN
-========================================= */
-
-function selectTile(tile, index) {
-
-  if (!acceptingInput) {
-    return;
-  }
-
-  if (
-    tile.classList.contains(
-      "selected"
-    )
-  ) {
-
-    return;
-
-  }
-
-  const number =
-    playerAnswer.length + 1;
-
-
-  tile.classList.add(
-    "selected"
-  );
-
-  tile.dataset.number =
-    number;
-
-
-  playerAnswer.push(
-    selectionPool[index]
-  );
-
-
-  /*
-     SOFORT PRÜFEN:
-     Ist das gerade gewählte Bild
-     an dieser Stelle falsch?
-  */
-
-  const position =
-    playerAnswer.length - 1;
-
-
-  if (
-    !sameItem(
-      playerAnswer[position],
-      sequence[position]
-    )
-  ) {
-
-    wrongAnswer();
-
-    return;
-
-  }
-
-
-  /*
-     Alle Bilder richtig
-  */
-
-  if (
-    playerAnswer.length ===
-    sequence.length
-  ) {
-
-    correctAnswer();
-
-  }
-
-}
-
-
-/* =========================================
-   FALSCH
-========================================= */
-
-function wrongAnswer() {
-
-  acceptingInput =
-    false;
-
-  clearInterval(
-    interval
-  );
-
-  interval =
-    null;
-
-
-  feedback.textContent =
-    "Falsch";
-
-  feedback.className =
-    "feedback wrong";
-
-  feedback.style.display =
-    "block";
-
-
-  /*
-     FALSCH bleibt genau
-     zwei Sekunden sichtbar.
-  */
-
-  setTimeout(
-    function() {
-
-      feedback.style.display =
-        "none";
-
-
-      attempts++;
-
-
-      /*
-         Nach dem ersten falschen
-         Versuch gibt es genau noch
-         EINEN Versuch.
-      */
-
-      if (
-        attempts === 1
-      ) {
-
-        startLastAttempt();
-
-      }
-
-      else {
-
-        showResult(
-          false
-        );
-
-      }
-
-    },
-    2000
-  );
-
-}
-
-
-/* =========================================
-   RICHTIG
-========================================= */
-
-function correctAnswer() {
-
-  acceptingInput =
-    false;
-
-  clearInterval(
-    interval
-  );
-
-  interval =
-    null;
-
-  attempts++;
-
-  feedback.textContent =
-    "Richtig!";
-
-  feedback.className =
-    "feedback correct";
-
-  feedback.style.display =
-    "block";
-
-
-  setTimeout(
-    function() {
-
-      feedback.style.display =
-        "none";
-
-      showResult(
-        true
-      );
-
-    },
-    1000
-  );
-
-}
-
-
-/* =========================================
-   COUNTDOWN
-========================================= */
-
-function countdown(
-  seconds,
-  text,
-  finished
-) {
-
-  clearInterval(
-    interval
-  );
-
-  let t =
-    seconds;
-
-
-  phase.textContent =
-    text;
-
-  timer.textContent =
-    t;
-
-
-  interval =
-    setInterval(
-      function() {
-
-        t--;
-
-        timer.textContent =
-          t;
-
-
-        if (
-          t <= 0
-        ) {
-
-          clearInterval(
-            interval
-          );
-
-          interval =
-            null;
-
-          finished();
-
-        }
-
-      },
-      1000
-    );
-
-}
-
-
-/* =========================================
-   START
-========================================= */
-
-function startGame() {
-
-  clearInterval(
-    interval
-  );
-
-  interval =
-    null;
-
-  attempts =
-    0;
-
-  playerAnswer =
-    [];
-
-  acceptingInput =
-    false;
-
-
-  const anzahl =
-    Number(
-      countSelect.value
-    );
-
-
-  sequence =
-    makeSequence(
-      typeSelect.value,
-      anzahl
-    );
-
-
-  settings.style.display =
-    "none";
-
-  game.style.display =
-    "block";
-
-  result.style.display =
-    "none";
-
-  feedback.style.display =
-    "none";
-
-
-  hint.textContent =
-    "Merke dir die Bilder in dieser Reihenfolge.";
-
-
-  draw(
-    grid,
-    sequence
-  );
-
-
-  countdown(
-
-    Number(
-      memorySelect.value
-    ),
-
-    "Merken!",
-
-    function() {
-
-      showTwoAttemptsMessage();
-
+    if (time <= 5) {
+      timer.classList.remove("warning");
+      timer.classList.add("danger");
     }
 
-  );
-
-}
-
-
-/* =========================================
-   NACH DER MERKZEIT
-========================================= */
-
-function showTwoAttemptsMessage() {
-
-  clearInterval(
-    interval
-  );
-
-  interval =
-    null;
-
-
-  phase.textContent =
-    "Nur zwei Versuche!";
-
-  timer.textContent =
-    "";
-
-  hint.textContent =
-    "";
-
-  grid.innerHTML =
-    "";
-
-
-  /*
-     Der Hinweis wird zwei Sekunden
-     angezeigt.
-  */
-
-  setTimeout(
-    function() {
-
-      startFirstAttempt();
-
-    },
-    2000
-  );
-
-}
-
-
-/* =========================================
-   ERSTER VERSUCH
-========================================= */
-
-function startFirstAttempt() {
-
-  playerAnswer =
-    [];
-
-  acceptingInput =
-    true;
-
-
-  selectionPool =
-    makeSelectionPool();
-
-
-  phase.textContent =
-    "1. Versuch";
-
-
-  hint.textContent =
-    "Wähle die Bilder in der richtigen Reihenfolge.";
-
-
-  drawSelectionGrid();
-
-
-  countdown(
-
-    Number(
-      solveSelect.value
-    ),
-
-    "Zeit!",
-
-    function() {
-
-      if (
-        acceptingInput
-      ) {
-
-        acceptingInput =
-          false;
-
-        attempts++;
-
-        showResult(
-          false
-        );
-
-      }
-
+    if (time <= 0) {
+      stopTimer();
+      playKlingelton();
+      startTransition();
     }
-
-  );
-
+  }, 1000);
 }
 
+function startTransition() {
+  gameTask.style.display = "none";
 
-/* =========================================
-   LETZTER VERSUCH
-========================================= */
+  timer.textContent = "–";
+  timer.className = "timer";
+  status.className = "status transition";
+  status.innerHTML =
+    "Legt eure gemeinsame Entscheidung<br>" +
+    "und Einsprüche auf den Tisch.";
 
-function startLastAttempt() {
-
-  playerAnswer =
-    [];
-
-  acceptingInput =
-    true;
-
-
-  selectionPool =
-    makeSelectionPool();
-
-
-  phase.textContent =
-    "Nur ein Versuch!";
-
-
-  timer.textContent =
-    "";
-
-
-  hint.textContent =
-    "Letzter Versuch – wähle deine Bilder in der richtigen Reihenfolge.";
-
-
-  drawSelectionGrid();
-
-
-  countdown(
-
-    Number(
-      solveSelect.value
-    ),
-
-    "Zeit!",
-
-    function() {
-
-      if (
-        acceptingInput
-      ) {
-
-        acceptingInput =
-          false;
-
-        attempts++;
-
-        showResult(
-          false
-        );
-
-      }
-
+  let wait = TRANSITION_TIME;
+  interval = setInterval(function () {
+    wait--;
+    if (wait <= 0) {
+      stopTimer();
+      startDecideTimer();
     }
-
-  );
-
+  }, 1000);
 }
 
+function startDecideTimer() {
+  let time = DECIDE_TIME;
+  timer.textContent = time;
+  timer.className = "timer danger";
+  status.className = "status decide";
+  status.innerHTML =
+    "Legt eure gemeinsame Entscheidung<br>" +
+    "und Einsprüche innerhalb von<br>" +
+    "<strong>20 Sekunden</strong> auf den Tisch.";
 
-/* =========================================
-   ERGEBNIS
-========================================= */
+  interval = setInterval(function () {
+    time--;
+    timer.textContent = time;
 
-function showResult(correct) {
-
-  acceptingInput =
-    false;
-
-  clearInterval(
-    interval
-  );
-
-  interval =
-    null;
-
-
-  phase.textContent =
-    "Ergebnis";
-
-
-  timer.textContent =
-    "";
-
-
-  grid.innerHTML =
-    "";
-
-
-  feedback.style.display =
-    "none";
-
-
-  if (correct) {
-
-    result.className =
-      "result correct";
-
-
-    resultMessage.textContent =
-      "Richtig!";
-
-
-    resultInfo.textContent =
-      "Geschafft – du hast " +
-      attempts +
-      " von 2 Versuchen benötigt.";
-
-  }
-
-  else {
-
-    result.className =
-      "result wrong";
-
-
-    resultMessage.textContent =
-      "Falsch";
-
-
-    resultInfo.textContent =
-      "Beide Versuche waren falsch.";
-
-  }
-
-
-  draw(
-    solutionGrid,
-    sequence
-  );
-
-
-  draw(
-    answerGrid,
-    playerAnswer
-  );
-
-
-  result.style.display =
-    "block";
-
-
-  hint.textContent =
-    "Hier siehst du die richtige Lösung und deine Eingabe zum Vergleich.";
-
+    if (time <= 0) {
+      stopTimer();
+      playKlingelton();
+      timer.textContent = "0";
+      status.className = "status finished";
+      status.innerHTML =
+        "ZEIT ABGELAUFEN<br><br>" +
+        "Die Entscheidung und Einsprüche<br>müssen jetzt auf dem Tisch liegen.";
+      newRoundButton.style.display = "block";
+    }
+  }, 1000);
 }
 
+function pickAndShowTask() {
+  const level = difficulty.value;
+  const list = tasks[level];
 
-/* =========================================
-   NEUE RUNDE
-========================================= */
+  currentTask = list[taskIndex[level]];
+  currentTime = times[level];
+  taskIndex[level] = (taskIndex[level] + 1) % list.length;
 
-function backToSettings() {
-
-  clearInterval(
-    interval
-  );
-
-  interval =
-    null;
-
-
-  acceptingInput =
-    false;
-
-
-  game.style.display =
-    "none";
-
-
-  settings.style.display =
-    "block";
-
-
-  grid.innerHTML =
-    "";
-
-
-  solutionGrid.innerHTML =
-    "";
-
-
-  answerGrid.innerHTML =
-    "";
-
-
-  result.style.display =
-    "none";
-
-
-  feedback.style.display =
-    "none";
-
-
-  phase.textContent =
-    "";
-
-
-  timer.textContent =
-    "";
-
-
-  hint.textContent =
-    "";
-
+  taskPreview.innerHTML =
+    currentTask.full +
+    "<br><br><strong>" + currentTime + " Sekunden</strong>";
+  taskPreview.style.display = "block";
 }
 
+difficulty.addEventListener("change", pickAndShowTask);
 
-/* =========================================
-   BUTTONS
-========================================= */
+startButton.addEventListener("click", function () {
+  if (!currentTask) pickAndShowTask();
+  menu.style.display = "none";
+  game.style.display = "block";
+  startObservationTimer(currentTime);
+});
 
-startButton.addEventListener(
-  "click",
-  function() {
+newRoundButton.addEventListener("click", function () {
+  stopTimer();
+  game.style.display = "none";
+  menu.style.display = "block";
+  gameTask.style.display = "none";
+  timer.textContent = "0";
+  status.textContent = "Zeit läuft …";
+  status.className = "status observe";
+  newRoundButton.style.display = "none";
+  pickAndShowTask();
+});
 
-    startGame();
-
-  }
-);
-
-
-backButton.addEventListener(
-  "click",
-  function() {
-
-    backToSettings();
-
-  }
-);
-
+pickAndShowTask();
 </script>
-
 </body>
 </html>
